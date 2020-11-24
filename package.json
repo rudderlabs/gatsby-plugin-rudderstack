@@ -1,0 +1,26 @@
+{
+  "name": "gatsby-plugin-rudderstack",
+  "version": "1.0.0",
+  "description": "Event tracking with Rudderstack in your Gatsby frontend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cwray-tech/rudder-integration-gatsby-plugin.git"
+  },
+  "keywords": [
+    "rudderstack",
+    "event",
+    "tracking",
+    "gatsby",
+    "gatsby-plugin"
+  ],
+  "author": "Rudderstack",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/cwray-tech/rudder-integration-gatsby-plugin/issues"
+  },
+  "homepage": "https://github.com/cwray-tech/rudder-integration-gatsby-plugin#readme"
+}
