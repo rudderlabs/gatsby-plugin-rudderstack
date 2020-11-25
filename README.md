@@ -3,7 +3,7 @@
 <p align="center"><b>The warehouse-first customer data platform built for devs</b></p>
 <br/>
 
-# \*\* Repo Name \*\*
+# The Rudderstack Plugin for Gatsby!
 
 \*\* Repo description \*\*
 |:------|
