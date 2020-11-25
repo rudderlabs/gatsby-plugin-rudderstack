@@ -5,12 +5,12 @@
 
 # The Rudderstack Plugin for Gatsby!
 
-\*\* Repo description \*\*
+This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application!
 |:------|
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
-# Why Use \*\* Software Name \*\*
+# Why Use this plugin
 
 \*\* Describe what software does. \*\*
 
