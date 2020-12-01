@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cwray-tech/rudder-integration-gatsby-plugin.git"
+    "url": "git+https://github.com/rudderlabs/gatsby-plugin-rudderstack.git"
   },
   "keywords": [
     "rudderstack",
