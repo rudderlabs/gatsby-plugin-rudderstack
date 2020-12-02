@@ -19,7 +19,7 @@
     "gatsby-plugin"
   ],
   "author": "Rudderstack",
-  "license": "GNU",
+  "license": "GPL",
   "bugs": {
     "url": "https://github.com/rudderlabs/gatsby-plugin-rudderstack/issues"
   },
