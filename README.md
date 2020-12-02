@@ -6,13 +6,12 @@
 # The Rudderstack Plugin for Gatsby!
 
 This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application!
-|:------|
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
 # Why Use this plugin
 
-\*\* Describe what software does. \*\*
+This plugin makes it easy to integrate your Gatsby website with the Rudderstack API and easily track events.
 
 # Key Features
 
@@ -42,7 +41,7 @@ We would love to see you contribute to RudderStack. Get more information on how 
 - [HackerNews][hackernews]
 - [Product Hunt][producthunt]
 
-# \*\* Optional \*\* :clap:  Our Supporters
+# \*\* Optional \*\* :clap: Our Supporters
 
 \*\* Update the repo names below. \*\*<br />
 
