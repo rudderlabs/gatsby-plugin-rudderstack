@@ -34,6 +34,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   const includeTrackPage = !trackPage ? "" : "analytics.page();";
 
   /* TODO: update to minified Snippet */
+  /* TODO: Use delay feature here like in Segment plugin. */
   const snippet = `rudderanalytics = window.rudderanalytics = [];
 	
 	var  methods = [
@@ -61,18 +62,16 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   rudderanalytics.page();
 `;
 
-  /* TODO: Update window.segmentSnippetLoaded to window.rudderstackSnippetLoaded */
-  /* TODO: Update window.segmentSnippetLoader()  to window.rudderstackSnippetLoader() */
   const delayedLoader = `
-      window.segmentSnippetLoaded = false;
-      window.segmentSnippetLoading = false;
-      window.segmentSnippetLoader = function (callback) {
-        if (!window.segmentSnippetLoaded && !window.segmentSnippetLoading) {
-          window.segmentSnippetLoading = true;
+      window.rudderSnippetLoaded = false;
+      window.rudderSnippetLoading = false;
+      window.rudderSnippetLoader = function (callback) {
+        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {
+          window.rudderSnippetLoading = true;
           function loader() {
-            window.analytics.load('${writeKey}');
-            window.segmentSnippetLoading = false;
-            window.segmentSnippetLoaded = true;
+            window.rudderanalytics.load('${writeKey}');
+            window.rudderSnippetLoading = false;
+            window.rudderSnippetLoaded = true;
             if(callback) {callback()}
           };
           setTimeout(
@@ -85,7 +84,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
           );
         }
       }
-      window.addEventListener('scroll',function () {window.segmentSnippetLoader()}, { once: true });
+      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });
     `;
 
   /*TODO: Ensure Rudderstack has this option. */
