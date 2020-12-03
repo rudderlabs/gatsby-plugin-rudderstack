@@ -36,6 +36,8 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   ${delayLoad || manualLoad ? `` : `analytics.load('${writeKey}');`}
   }}();`;
 
+  /* TODO: Update window.segmentSnippetLoaded to window.rudderstackSnippetLoaded */
+  /* TODO: Update window.segmentSnippetLoader()  to window.rudderstackSnippetLoader() */
   const delayedLoader = `
       window.segmentSnippetLoaded = false;
       window.segmentSnippetLoading = false;

@@ -17,6 +17,8 @@ exports.onRouteUpdate = (
     }, delay);
   }
 
+  /*TODO: Update segmentSnippetLoaded when ssr page is fixed. */
+  /*TODO: Update segmentSnippetLoader() when ssr page is fixed. */
   // This `if/then` logic relates to the `delayLoad` functionality to help prevent
   // calling `trackPage` twice. If you don't use that feature, you can ignore.
   // Here call `trackPage` only _after_ we change routes (on the client).
