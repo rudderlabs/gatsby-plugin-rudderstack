@@ -10,31 +10,56 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoad,
     delayLoadTime,
     manualLoad,
+    website = "http://localhost::8000",
   } = pluginOptions;
 
-  /* TODO: Update to match Rudderstack write key requirements. */
-  // ensures Segment write key is present
+  // ensures Rudderstack production write key is present
   if (!prodKey || prodKey.length < 10)
-    console.error("segment prodKey must be at least 10 char in length");
+    console.error(
+      "Your Rudderstack prodKey must be at least 10 char in length."
+    );
 
-  // if dev key is present, ensures it is at least 10 car in length
+  // if Rudderstack dev key is present, ensures it is at least 10 characters in length
   if (devKey && devKey.length < 10)
-    console.error("if present, devKey must be at least 10 char in length");
+    console.error(
+      "If present, your Rudderstack devKey must be at least 10 char in length."
+    );
 
   // use prod write key when in prod env, else use dev write key
   // note below, snippet wont render unless writeKey is truthy
   const writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  /* TODO: make sure Rudderstack has this option, and update to work with Rudderstack API */
   // if trackPage option is falsy (undefined or false), remove analytics.page(), else keep it in by default
   // NOTE: do not remove per https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/18
   const includeTrackPage = !trackPage ? "" : "analytics.page();";
 
-  /* TODO: update to Rudderstack's snippet. */
-  // Segment's minified snippet (version 4.1.0)
-  const snippet = `!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="${host}/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
-  ${delayLoad || manualLoad ? `` : `analytics.load('${writeKey}');`}
-  }}();`;
+  /* TODO: update to minified Snippet */
+  const snippet = `rudderanalytics = window.rudderanalytics = [];
+	
+	var  methods = [
+		"load",
+		"page",
+		"track",
+		"identify",
+		"alias",
+		"group",
+		"ready",
+		"reset",
+		"getAnonymousId",
+    "setAnonymousId"
+	];
+
+	for (var i = 0; i < methods.length; i++) {
+  		var method = methods[i];
+  		rudderanalytics[method] = function (methodName) {
+    			return function () {
+      				rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
+    			};
+  			}(method);
+	}
+  rudderanalytics.load(${writeKey}, ${website});
+  rudderanalytics.page();
+`;
 
   /* TODO: Update window.segmentSnippetLoaded to window.rudderstackSnippetLoaded */
   /* TODO: Update window.segmentSnippetLoader()  to window.rudderstackSnippetLoader() */
