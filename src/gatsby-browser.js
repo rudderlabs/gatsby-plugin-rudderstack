@@ -1,3 +1,5 @@
+/* TODO: Ensure Rudderstack has a track page delay setting. */
+/*TODO: Update trackSegmentPage() function to trackRudderstackPage() */
 exports.onRouteUpdate = (
   { prevLocation },
   { trackPage, trackPageDelay = 50 }
