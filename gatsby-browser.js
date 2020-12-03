@@ -6,7 +6,7 @@ exports.onRouteUpdate = function (_ref, _ref2) {
       _ref2$trackPageDelay = _ref2.trackPageDelay,
       trackPageDelay = _ref2$trackPageDelay === undefined ? 50 : _ref2$trackPageDelay;
 
-  function trackSegmentPage() {
+  function trackRudderstackPage() {
     var delay = Math.max(0, trackPageDelay);
 
     window.setTimeout(function () {
@@ -18,9 +18,9 @@ exports.onRouteUpdate = function (_ref, _ref2) {
 
   if (prevLocation && window.segmentSnippetLoaded === false) {
     window.segmentSnippetLoader(function () {
-      trackSegmentPage();
+      trackRudderstackPage();
     });
   } else {
-    trackSegmentPage();
+    trackRudderstackPage();
   }
 };
