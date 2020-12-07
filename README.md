@@ -38,12 +38,12 @@ plugins: [
       // your rudderstack write key for your production environment
       // when process.env.NODE_ENV === 'production'
       // required; non-empty string
-      prodKey: `Rudderstack_PRODUCTION_WRITE_KEY`,
+      prodKey: `RUDDERSTACK_PRODUCTION_WRITE_KEY`,
 
       // if you have a development env for your rudderstack account, paste that key here
       // when process.env.NODE_ENV === 'development'
       // optional; non-empty string
-      devKey: `Rudderstack_DEV_WRITE_KEY`,
+      devKey: `RUDDERSTACK_DEV_WRITE_KEY`,
 
       // boolean (defaults to false) on whether you want
       // to include analytics.page() automatically
@@ -93,13 +93,13 @@ plugins: [
 
 ### Track Events
 
-If you want to track events, you simply invoke Rudderstack as normal in your React components — (`window.analytics.track('Event Name', {...})` — and you should see the events within your Rudderstack debugger! For example, if you wanted to track events on a click, it may look something like this:
+If you want to track events, you simply invoke Rudderstack as normal in your React components — (`window.rudderanalytics.track('Event Name', {...})` — and you should see the events within your Rudderstack debugger! For example, if you wanted to track events on a click, it may look something like this:
 
 ```javascript
 class IndexPage extends React.Component {
     ...
     _handleClick() {
-        window.analytics.track("Track Event Fired", {
+        window.rudderanalytics.track("Track Event Fired", {
             userId: user.id,
             gender: 'male',
             age: 33,
@@ -120,12 +120,12 @@ class IndexPage extends React.Component {
 
 ### Track Pageviews
 
-If you want to track pageviews automatically, set `trackPage` to `true` in your `gatsby-config.js` file. What we mean by _"automatically"_ is that whenever there is a route change, we leverage Gatsby's `onRouteUpdate` API in the `gatsby-browser.js` file ([link](https://www.gatsbyjs.org/docs/browser-apis/#onRouteUpdate)) to invoke `window.analytics.page()` on each route change. But if you want to pass in properties along with the pageview call (ie, it's common to see folks pass in some user or account data with each page call), then you'll have to set `trackPage: false` and call it yourself in your `gatsby-browser.js` file, like this:
+If you want to track pageviews automatically, set `trackPage` to `true` in your `gatsby-config.js` file. What we mean by _"automatically"_ is that whenever there is a route change, we leverage Gatsby's `onRouteUpdate` API in the `gatsby-browser.js` file ([link](https://www.gatsbyjs.org/docs/browser-apis/#onRouteUpdate)) to invoke `window.rudderanalytics.page()` on each route change. But if you want to pass in properties along with the pageview call (ie, it's common to see folks pass in some user or account data with each page call), then you'll have to set `trackPage: false` and call it yourself in your `gatsby-browser.js` file, like this:
 
 ```javascript
 // gatsby-browser.js
 exports.onRouteUpdate = () => {
-  window.analytics && window.analytics.page();
+  window.rudderanalytics && window.rudderanalytics.page();
 };
 ```
 
