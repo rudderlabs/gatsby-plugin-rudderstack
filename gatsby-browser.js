@@ -16,8 +16,8 @@ exports.onRouteUpdate = function (_ref, _ref2) {
     }, delay);
   }
 
-  if (prevLocation && window.segmentSnippetLoaded === false) {
-    window.segmentSnippetLoader(function () {
+  if (prevLocation && window.rudderSnippetLoaded === false) {
+    window.rudderSnippetLoader(function () {
       trackRudderstackPage();
     });
   } else {
