@@ -131,7 +131,7 @@ exports.onRouteUpdate = () => {
 
 # License
 
-RudderStack \*\* software name \*\* is released under the [AGPLv3 License][agplv3_license].
+RudderStack **gatsby-plugin-rudderstack** is released under the [AGPLv3 License][agplv3_license].
 
 # Contribute
 
