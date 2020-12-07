@@ -95,9 +95,13 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   if (writeKey) {
     setHeadComponents([
       <script
-        key="plugin-segment"
+        key="plugin-rudderstack"
         dangerouslySetInnerHTML={{ __html: snippetToUse }}
       />,
+      <script
+        key="rudderstack-cdn"
+        src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+      ></script>,
     ]);
   }
 };
