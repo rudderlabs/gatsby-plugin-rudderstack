@@ -87,14 +87,12 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
       window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });
     `;
 
-  /*TODO: Ensure Rudderstack has this option. */
   // if `delayLoad` option is true, use the delayed loader
   const snippetToUse = `
       ${delayLoad && !manualLoad ? delayedLoader : ""}
       ${snippet}
     `;
 
-  /*TODO: Ensure this is needed. */
   // only render snippet if write key exists
   if (writeKey) {
     setHeadComponents([
