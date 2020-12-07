@@ -1,6 +1,5 @@
 import React from "react";
 
-/* TODO:Update to accept Rudderstack options. */
 exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   const {
     trackPage,
