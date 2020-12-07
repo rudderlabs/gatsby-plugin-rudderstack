@@ -10,7 +10,6 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoad,
     delayLoadTime,
     manualLoad,
-    website = "http://localhost::8000",
   } = pluginOptions;
 
   // ensures Rudderstack production write key is present
@@ -58,7 +57,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     			};
   			}(method);
 	}
-  rudderanalytics.load(${writeKey}, ${website});
+  rudderanalytics.load(${writeKey}, ${host});
   rudderanalytics.page();
 `;
 
