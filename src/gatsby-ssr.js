@@ -33,7 +33,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
   /* TODO: update to minified Snippet */
   /* TODO: Use delay feature here like in Segment plugin. */
-  const snippet = `rudderanalytics = window.rudderanalytics = [];
+  const snippet = `analytics = window.analytics = [];
 	
 	var  methods = [
 		"load",
