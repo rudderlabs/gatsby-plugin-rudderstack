@@ -1,11 +1,11 @@
 <p align="center"><a href="https://rudderstack.com"><img src="https://raw.githubusercontent.com/rudderlabs/rudder-server/master/resources/RudderStack.png" alt="RudderStack - An Open Source Customer Data Platform" height="90"/></a></p>
-<h1 align="center"></h1>
+<h1 align="center">gatsby-plugin-rudderstack</h1>
 <p align="center"><b>The warehouse-first customer data platform built for devs</b></p>
 <br/>
 
-# The Rudderstack Plugin for Gatsby!
+# This is the Rudderstack Plugin for Gatsby
 
-This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application!
+This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application.
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
@@ -15,16 +15,14 @@ This plugin makes it easy to integrate your Gatsby website with the Rudderstack 
 
 # Key Features
 
-Packed with features:
-
 - use multiple write keys (one for prod env, another optional one for dev)
 - disable page view tracking (just in case you want to add it later manually)
-- up to date (Segment snippet 4.1.0)
+- up to date (Rudderstack team maintained)
 
 ## Install
 
-- NPM: `$ npm install --save gatsby-plugin-segment-js`
-- YARN: `$ yarn add gatsby-plugin-segment-js`
+- NPM: `$ npm install --save gatsby-plugin-rudderstack`
+- YARN: `$ yarn add gatsby-plugin-rudderstack`
 
 ## How to use
 
@@ -35,17 +33,17 @@ In your gatsby-config.js file:
 ```javascript
 plugins: [
   {
-    resolve: `gatsby-plugin-segment-js`,
+    resolve: `gatsby-plugin-rudderstack`,
     options: {
-      // your segment write key for your production environment
+      // your rudderstack write key for your production environment
       // when process.env.NODE_ENV === 'production'
       // required; non-empty string
-      prodKey: `SEGMENT_PRODUCTION_WRITE_KEY`,
+      prodKey: `Rudderstack_PRODUCTION_WRITE_KEY`,
 
-      // if you have a development env for your segment account, paste that key here
+      // if you have a development env for your rudderstack account, paste that key here
       // when process.env.NODE_ENV === 'development'
       // optional; non-empty string
-      devKey: `SEGMENT_DEV_WRITE_KEY`,
+      devKey: `Rudderstack_DEV_WRITE_KEY`,
 
       // boolean (defaults to false) on whether you want
       // to include analytics.page() automatically
@@ -57,24 +55,23 @@ plugins: [
       trackPageDelay: 50,
 
       // If you need to proxy events through a custom endpoint,
-      // add a `host` property (defaults to https://cdn.segment.io)
-      // Segment docs:
-      //   - https://segment.com/docs/connections/sources/custom-domains
-      //   - https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#proxy
-      host: `https://override-segment-endpoint`,
+      // add a `host` property (defaults to https://hosted.rudderlabs.com )
+      // Rudderstack docs:
+      //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#2-1-minified-code
+      host: `https://override-rudderstack-endpoint`,
 
-      // boolean (defaults to false); whether to delay load Segment
+      // boolean (defaults to false); whether to delay load Rudderstack
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
-      // This feature will force Segment to load _after_ either a page routing change
+      // This feature will force Rudderstack to load _after_ either a page routing change
       // or user scroll, whichever comes first. This delay time is controlled by
       // `delayLoadTime` setting. This feature is used to help improve your website's
       // TTI (for SEO, UX, etc).  See links below for more info.
       // NOTE: But if you are using server-side routing and enable this feature,
-      // Segment will never load (because although client-side routing does not do
-      // a full page refresh, server-side routing does, thereby preventing Segment
+      // Rudderstack will never load (because although client-side routing does not do
+      // a full page refresh, server-side routing does, thereby preventing Rudderstack
       // from ever loading).
       // See here for more context:
-      // GIF: https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/19#issuecomment-559569483
+      // GIF: https://github.com/benjaminhoffman/gatsby-plugin-segment/pull/19#issuecomment-559569483
       // TTI: https://github.com/GoogleChrome/lighthouse/blob/master/docs/scoring.md#performance
       // Problem/solution: https://marketingexamples.com/seo/performance
       delayLoad: false,
@@ -86,7 +83,7 @@ plugins: [
       // Whether to completely skip calling `analytics.load()`.
       // ADVANCED FEATURE: only use if you are calling `analytics.load()` manually
       // elsewhere in your code or are using a library
-      // like: https://github.com/segmentio/consent-manager that will call it for you.
+      // like: https://github.com/Rudderstackio/consent-manager that will call it for you.
       // Useful for only loading the tracking script once a user has opted in to being tracked, for example.
       manualLoad: false
     }
@@ -96,7 +93,7 @@ plugins: [
 
 ### Track Events
 
-If you want to track events, you simply invoke Segment as normal in your React components — (`window.analytics.track('Event Name', {...})` — and you should see the events within your Segment debugger! For example, if you wanted to track events on a click, it may look something like this:
+If you want to track events, you simply invoke Rudderstack as normal in your React components — (`window.analytics.track('Event Name', {...})` — and you should see the events within your Rudderstack debugger! For example, if you wanted to track events on a click, it may look something like this:
 
 ```javascript
 class IndexPage extends React.Component {
@@ -152,9 +149,7 @@ We would love to see you contribute to RudderStack. Get more information on how 
 - [HackerNews][hackernews]
 - [Product Hunt][producthunt]
 
-# \*\* Optional \*\* :clap: Our Supporters
-
-\*\* Update the repo names below. \*\*<br />
+# :clap: Our Supporters
 
 [![Stargazers repo roster for @rudderlabs/rudder-server](https://reporoster.com/stars/rudderlabs/rudder-repo-template)](https://github.com/rudderlabs/rudder-repo-template/stargazers)
 [![Forkers repo roster for @rudderlabs/rudder-server](https://reporoster.com/forks/rudderlabs/rudder-repo-template)](https://github.com/rudderlabs/rudder-repo-template/network/members)
