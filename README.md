@@ -3,7 +3,7 @@
 <p align="center"><b>The warehouse-first customer data platform built for devs</b></p>
 <br/>
 
-# This is the Rudderstack Plugin for Gatsby
+# The Rudderstack Plugin for Gatsby
 
 This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application.
 

@@ -5,7 +5,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     trackPage,
     prodKey,
     devKey,
-    host = "https://hosted.rudderlabs.com ",
+    host = "https://hosted.rudderlabs.com",
     delayLoad,
     delayLoadTime,
     manualLoad,
@@ -33,7 +33,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
   /* TODO: update to minified Snippet */
   /* TODO: Use delay feature here like in Segment plugin. */
-  const snippet = `analytics = window.analytics = [];
+  const snippet = `rudderanalytics = window.rudderanalytics = [];
 	
 	var  methods = [
 		"load",
@@ -50,14 +50,14 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
 	for (var i = 0; i < methods.length; i++) {
   		var method = methods[i];
-  		analytics[method] = function (methodName) {
+  		rudderanalytics[method] = function (methodName) {
     			return function () {
-      				analytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
+      				rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
     			};
   			}(method);
 	}
-  analytics.load('${writeKey}', '${host}');
-  analytics.page();
+  rudderanalytics.load('${writeKey}', '${host}');
+  rudderanalytics.page();
 `;
 
   const delayedLoader = `
@@ -67,7 +67,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
         if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {
           window.rudderSnippetLoading = true;
           function loader() {
-            window.analytics.load('${writeKey}');
+            window.rudderanalytics.load('${writeKey}');
             window.rudderSnippetLoading = false;
             window.rudderSnippetLoaded = true;
             if(callback) {callback()}

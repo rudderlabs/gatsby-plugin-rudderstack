@@ -12,7 +12,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
       prodKey = pluginOptions.prodKey,
       devKey = pluginOptions.devKey,
       _pluginOptions$host = pluginOptions.host,
-      host = _pluginOptions$host === undefined ? "https://hosted.rudderlabs.com " : _pluginOptions$host,
+      host = _pluginOptions$host === undefined ? "https://hosted.rudderlabs.com" : _pluginOptions$host,
       delayLoad = pluginOptions.delayLoad,
       delayLoadTime = pluginOptions.delayLoadTime,
       manualLoad = pluginOptions.manualLoad;
@@ -25,9 +25,9 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   var includeTrackPage = !trackPage ? "" : "analytics.page();";
 
-  var snippet = "analytics = window.analytics = [];\n\t\n\tvar  methods = [\n\t\t\"load\",\n\t\t\"page\",\n\t\t\"track\",\n\t\t\"identify\",\n\t\t\"alias\",\n\t\t\"group\",\n\t\t\"ready\",\n\t\t\"reset\",\n\t\t\"getAnonymousId\",\n    \"setAnonymousId\"\n\t];\n\n\tfor (var i = 0; i < methods.length; i++) {\n  \t\tvar method = methods[i];\n  \t\tanalytics[method] = function (methodName) {\n    \t\t\treturn function () {\n      \t\t\t\tanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));\n    \t\t\t};\n  \t\t\t}(method);\n\t}\n  analytics.load('" + writeKey + "', '" + host + "');\n  analytics.page();\n";
+  var snippet = "rudderanalytics = window.rudderanalytics = [];\n\t\n\tvar  methods = [\n\t\t\"load\",\n\t\t\"page\",\n\t\t\"track\",\n\t\t\"identify\",\n\t\t\"alias\",\n\t\t\"group\",\n\t\t\"ready\",\n\t\t\"reset\",\n\t\t\"getAnonymousId\",\n    \"setAnonymousId\"\n\t];\n\n\tfor (var i = 0; i < methods.length; i++) {\n  \t\tvar method = methods[i];\n  \t\trudderanalytics[method] = function (methodName) {\n    \t\t\treturn function () {\n      \t\t\t\trudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));\n    \t\t\t};\n  \t\t\t}(method);\n\t}\n  rudderanalytics.load('" + writeKey + "', '" + host + "');\n  rudderanalytics.page();\n";
 
-  var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          function loader() {\n            window.analytics.load('" + writeKey + "');\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if(callback) {callback()}\n          };\n          setTimeout(\n            function () {\n              \"requestIdleCallback\" in window\n                ? requestIdleCallback(function () {loader()})\n                : loader();\n            },\n            " + delayLoadTime + " || 1000\n          );\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n    ";
+  var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          function loader() {\n            window.rudderanalytics.load('" + writeKey + "');\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if(callback) {callback()}\n          };\n          setTimeout(\n            function () {\n              \"requestIdleCallback\" in window\n                ? requestIdleCallback(function () {loader()})\n                : loader();\n            },\n            " + delayLoadTime + " || 1000\n          );\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n    ";
 
   var snippetToUse = "\n      " + (delayLoad && !manualLoad ? delayedLoader : "") + "\n      " + snippet + "\n    ";
 

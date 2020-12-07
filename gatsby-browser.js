@@ -11,7 +11,7 @@ exports.onRouteUpdate = function (_ref, _ref2) {
 
     window.setTimeout(function () {
       if (trackPage) {
-        window.analytics && window.analytics.page(document.title);
+        window.rudderanalytics && window.rudderanalytics.page(document.title);
       }
     }, delay);
   }

@@ -12,7 +12,7 @@ exports.onRouteUpdate = (
 
     window.setTimeout(() => {
       if (trackPage) {
-        window.analytics && window.analytics.page(document.title);
+        window.rudderanalytics && window.rudderanalytics.page(document.title);
       }
     }, delay);
   }
