@@ -5,7 +5,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     trackPage,
     prodKey,
     devKey,
-    host = "https://cdn.segment.io",
+    host = "https://hosted.rudderlabs.com ",
     delayLoad,
     delayLoadTime,
     manualLoad,
@@ -56,7 +56,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     			};
   			}(method);
 	}
-  analytics.load(${writeKey}, ${host});
+  analytics.load('${writeKey}', '${host}');
   analytics.page();
 `;
 
