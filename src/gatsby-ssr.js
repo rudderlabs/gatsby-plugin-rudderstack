@@ -56,8 +56,11 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     			};
   			}(method);
 	}
-  rudderanalytics.load('${writeKey}', '${host}');
-  rudderanalytics.page();
+  ${
+    delayLoad || manualLoad
+      ? ``
+      : `rudderanalytics.load('${writeKey}', '${host}')`
+  };
 `;
 
   const delayedLoader = `
