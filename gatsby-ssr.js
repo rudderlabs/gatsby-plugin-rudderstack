@@ -23,7 +23,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   var writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  var includeTrackPage = !trackPage ? "" : "analytics.page();";
+  var includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
 
   var snippet = "rudderanalytics = window.rudderanalytics = [];\n\t\n\tvar  methods = [\n\t\t\"load\",\n\t\t\"page\",\n\t\t\"track\",\n\t\t\"identify\",\n\t\t\"alias\",\n\t\t\"group\",\n\t\t\"ready\",\n\t\t\"reset\",\n\t\t\"getAnonymousId\",\n    \"setAnonymousId\"\n\t];\n\n\tfor (var i = 0; i < methods.length; i++) {\n  \t\tvar method = methods[i];\n  \t\trudderanalytics[method] = function (methodName) {\n    \t\t\treturn function () {\n      \t\t\t\trudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));\n    \t\t\t};\n  \t\t\t}(method);\n\t}\n  " + (delayLoad || manualLoad ? "" : "rudderanalytics.load('" + writeKey + "', '" + host + "')") + ";\n";
 
