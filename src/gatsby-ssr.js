@@ -27,9 +27,9 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   // note below, snippet wont render unless writeKey is truthy
   const writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  // if trackPage option is falsy (undefined or false), remove analytics.page(), else keep it in by default
-  // NOTE: do not remove per https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/18
-  const includeTrackPage = !trackPage ? "" : "analytics.page();";
+  // if trackPage option is falsy (undefined or false), remove rudderanalytics.page(), else keep it in by default
+  // NOTE: do not remove. This is used in gatsby-browser. per https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/18
+  const includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
 
   /* TODO: update to minified Snippet */
   /* TODO: Use delay feature here like in Segment plugin. */
