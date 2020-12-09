@@ -15,9 +15,10 @@ This is an example website for using the gatsby rudderstack analytics plugin.
 
 ### Then, to run the Gatsby Website
 
-- Make sure to edit the gatsby-config.js file configuration. (Add your write key.)
+- Make sure to edit the gatsby-config.js file configuration. **Add your write key.**
 
 Then, in your terminal in this directory:
 
 - `npm install` or `yarn`
 - `npm run develop`
+- Visit the site at [http://localhost::8000/](http://localhost::8000/)
