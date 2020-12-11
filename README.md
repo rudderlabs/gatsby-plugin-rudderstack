@@ -24,9 +24,9 @@ This plugin makes it easy to integrate your Gatsby website with the Rudderstack 
 - NPM: `$ npm install --save gatsby-plugin-rudderstack`
 - YARN: `$ yarn add gatsby-plugin-rudderstack`
 
-## How to use
+# [](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#setup) Setup
 
-### Setup
+## [](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#step-1-configure-gatsby) Step 1: Configure Your Gatsby Config File
 
 In your gatsby-config.js file:
 
@@ -38,11 +38,13 @@ plugins: [
       // your rudderstack write key for your production environment
       // when process.env.NODE_ENV === 'production'
       // required; non-empty string
+      //NOTE: Do not commit this to git. Process from env.
       prodKey: `RUDDERSTACK_PRODUCTION_WRITE_KEY`,
 
       // if you have a development env for your rudderstack account, paste that key here
       // when process.env.NODE_ENV === 'development'
       // optional; non-empty string
+      //NOTE: Do not commit this to git. Process from env.
       devKey: `RUDDERSTACK_DEV_WRITE_KEY`,
 
       // boolean (defaults to false) on whether you want
@@ -83,7 +85,7 @@ plugins: [
       // Whether to completely skip calling `analytics.load()`.
       // ADVANCED FEATURE: only use if you are calling `analytics.load()` manually
       // elsewhere in your code or are using a library
-      // like: https://github.com/Rudderstackio/consent-manager that will call it for you.
+      // that will call it for you.
       // Useful for only loading the tracking script once a user has opted in to being tracked, for example.
       manualLoad: false
     }
@@ -91,42 +93,172 @@ plugins: [
 ];
 ```
 
-### Track Events
+## [](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#step-2-identify-your-users-using-the-identify-method)Step 2: Identify Your Users With the `identify()` Method:
 
-If you want to track events, you simply invoke Rudderstack as normal in your React components — (`window.rudderanalytics.track('Event Name', {...})` — and you should see the events within your Rudderstack debugger! For example, if you wanted to track events on a click, it may look something like this:
+The `identify()` method allows you to link users and their actions to a specific userid.
+
+A sample example of how the `identify()` method works in Gatsby is as shown:
 
 ```javascript
-class IndexPage extends React.Component {
-    ...
-    _handleClick() {
-        window.rudderanalytics.track("Track Event Fired", {
-            userId: user.id,
-            gender: 'male',
-            age: 33,
-        });
-    }
-    render() {
-        return (
-            <p>
-                <Link onClick={this._handleClick} to="/">
-                    Click here
-                </Link>{" "}
-                to see a track event
-            </p>
-        );
-    }
+class CallToAction extends React.Component {
+    _handleCallToAction() {
+        window.rudderanalytics.identify(
+          "12345", {
+            email: "name@domain.com"
+          }, {
+            page: {
+              path: "/post",
+              referrer: "internal",
+              search: "",
+              title: "Post Page",
+              url: "",
+            },
+          }
+        }
+
+        render() {
+            return (
+                <Link onClick={ this._handleCallToAction } to="/write-post">Write a Post</Link>
+              )
+        }
 }
+```
+
+In the above example, information such as the user ID, email along with contextual information such as IP address, anonymousId, etc. will be captured.
+
+> **NOTE**: There is no need to call `identify()` for anonymous visitors to your website. Such visitors are automatically assigned an `anonymousId`.
+
+## [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-3-track-your-users-actions-using-the-track-method)Step 3: Track Your Users’ Actions With the `track()` Method
+
+The `track()` method allows you to track any actions that your users might perform.
+
+A sample example of how the `track()` method works is as shown:
+
+```javascript
+window.rudderanalytics.track(
+  "test track event GA3",
+  {
+    revenue: 30,
+    currency: "USD",
+    user_actual_id: 12345,
+  },
+  () => {
+    console.log("in track call");
+  }
+);
+```
+
+In the above example, the method tracks the event ‘**test track event GA3**’, and information such as the revenue, currency, anonymousId.
+
+You can use this method to track various other success metrics for your website, such as user signups, item purchases, article bookmarks, and much more.
+
+> **NOTE**: To override contextual information, for ex: anonymizing IP and other contextual fields like page properties, the following template can be used. Similarly one can override the auto-generated anonymousId with provided ID. For this:
+
+```javascript
+window.rudderanalytics.track(
+  "test track event GA3",
+  {
+    revenue: 30,
+    currency: "USD",
+    user_actual_id: 12345,
+  },
+  () => {
+    console.log("in track call");
+  }
+);
 ```
 
 ### Track Pageviews
 
-If you want to track pageviews automatically, set `trackPage` to `true` in your `gatsby-config.js` file. What we mean by _"automatically"_ is that whenever there is a route change, we leverage Gatsby's `onRouteUpdate` API in the `gatsby-browser.js` file ([link](https://www.gatsbyjs.org/docs/browser-apis/#onRouteUpdate)) to invoke `window.rudderanalytics.page()` on each route change. But if you want to pass in properties along with the pageview call (ie, it's common to see folks pass in some user or account data with each page call), then you'll have to set `trackPage: false` and call it yourself in your `gatsby-browser.js` file, like this:
+**If you want to track pageviews automatically,** set `trackPage` to `true` in your `gatsby-config.js` file. What we mean by _"automatically"_ is that whenever there is a route change, we leverage Gatsby's `onRouteUpdate` API in the `gatsby-browser.js` file ([link](https://www.gatsbyjs.org/docs/browser-apis/#onRouteUpdate)) to invoke `window.rudderanalytics.page()` on each route change. But if you want to pass in properties along with the pageview call (ie, it's common to see folks pass in some user or account data with each page call), then you'll have to set `trackPage: false` and call it yourself in your `gatsby-browser.js` file, like this:
 
 ```javascript
 // gatsby-browser.js
 exports.onRouteUpdate = () => {
   window.rudderanalytics && window.rudderanalytics.page();
 };
+```
+
+You’ve now successfully installed `rudder-analytics.js` tracking. You can enable and use any event destination to send your event data via RudderStack, in no time at all!
+
+## [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-4-check-ready-state)Step 4: Check Ready State
+
+There are cases when you may want to tap into the features provide by end destination SDKs to enhance tracking and other functionalities. RudderStack's JavaScript SDK exposes a `ready` API with a `callback` parameter, that fires when the SDK is done initializing itself and other third-party native SDK destinations.
+
+For example:
+
+```javascript
+window.rudderanalytics.ready(() => {
+  console.log("we are all set!!!");
+});
+```
+
+| **For detailed technical documentation and troubleshooting guide on the RudderStack’s JavaScript SDK, check out our [docs](https://docs.rudderlabs.com/sdk-integration-guide/getting-started-with-javascript-sdk).** |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+# [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#querystring-api)Querystring API
+
+RudderStack's Querystring API allows you to trigger `track`, `identify` calls using query parameters. If you pass the following parameters in the URL, then it will trigger the corresponding SDK API call.
+
+For example:
+
+```html
+http://hostname.com/?ajs_uid=12345&ajs_event=test%20event&ajs_aid=abcde&ajs_prop_testProp=prop1&ajs_trait_name=Firstname+Lastname
+```
+
+For the above URL, the below SDK calls will be triggered:
+
+```javascript
+rudderanalytics.identify("12345", { name: "Firstname Lastname" });
+rudderanalytics.track("test event", { testProp: "prop1" });
+rudderanalytics.setAnonymousId("abcde");
+```
+
+You may use the below parameters as querystring parameter and trigger the corresponding call.
+
+`ajs_uid` : Makes a `rudderanalytics.identify()` call with `userId` having the value of the parameter value.
+
+`ajs_aid` : Makes a `rudderanalytics.setAnonymousId()` call with `anonymousId` having the value of the parameter value.
+
+`ajs_event` : Makes a `rudderanalytics.track()` call with `event` name as parameter value.
+
+`ajs_prop_<property>` : If `ajs_event` is passed as querystring, value of this parameter will populate the `properties` of the corresponding event in the `track` call.
+
+`ajs_trait_<trait>` : If `ajs_uid` is provided as querysting, value of this parameter will populate the `traits` of the `identify` call made.
+
+# [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#adding-callbacks-to-standard-methods)Adding Callbacks to Standard Methods
+
+## TODO: Update for Gatsby Use
+
+You can also define callbacks to the common methods of the `rudderanalytics` object.
+
+> **Note**: For now, the functionality is supported for `syncPixel` method which is called in the SDK when making sync calls in integrations for relevant destinations.
+
+For example:
+
+```javascript
+window.rudderanalytics.syncPixelCallback = (obj) => {
+  window.rudderanalytics.track(
+    "sync lotame",
+    { destination: obj.destination },
+    { integrations: { All: false, S3: true } }
+  );
+};
+```
+
+In the above example, we are defining a `syncPixelCallback` on the analytics object before the call to load the SDK. This will lead to calling of this registered callback with the parameter `{destination: <destination_name>}` whenever a sync call is made from the SDK for relevant integrations like _Lotame_.
+
+The callback can be supplied in options parameter like below as well:
+
+```javascript
+//define the callbacks directly on the load method like:
+rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL, {
+  clientSuppliedCallbacks: {
+    syncPixelCallback: () => {
+      console.log("sync done!");
+    },
+  },
+});
 ```
 
 # License
