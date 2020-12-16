@@ -31,36 +31,11 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   // NOTE: do not remove. This is used in gatsby-browser. per https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/18
   const includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
 
-  /* TODO: update to minified Snippet */
-  /* TODO: Use delay feature here like in Segment plugin. */
-  const snippet = `rudderanalytics = window.rudderanalytics = [];
-	
-	var  methods = [
-		"load",
-		"page",
-		"track",
-		"identify",
-		"alias",
-		"group",
-		"ready",
-		"reset",
-		"getAnonymousId",
-    "setAnonymousId"
-	];
-
-	for (var i = 0; i < methods.length; i++) {
-  		var method = methods[i];
-  		rudderanalytics[method] = function (methodName) {
-    			return function () {
-      				rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
-    			};
-  			}(method);
-	}
-  ${
-    delayLoad || manualLoad
+  const snippet = `
+  rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
+  ${ delayLoad || manualLoad
       ? ``
-      : `rudderanalytics.load('${writeKey}', '${host}')`
-  };
+      : `rudderanalytics.load('${writeKey}','${host}''),rudderanalytics.page();
 `;
 
   const delayedLoader = `
