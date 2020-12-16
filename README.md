@@ -228,13 +228,11 @@ You may use the below parameters as querystring parameter and trigger the corres
 
 # [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#adding-callbacks-to-standard-methods)Adding Callbacks to Standard Methods
 
-## TODO: Update for Gatsby Use
-
 You can also define callbacks to the common methods of the `rudderanalytics` object.
 
 > **Note**: For now, the functionality is supported for `syncPixel` method which is called in the SDK when making sync calls in integrations for relevant destinations.
 
-For example:
+For example, you can load the rudderanalytics with callbacks in your Gatsby browser file:
 
 ```javascript
 window.rudderanalytics.syncPixelCallback = (obj) => {
@@ -246,12 +244,14 @@ window.rudderanalytics.syncPixelCallback = (obj) => {
 };
 ```
 
+Note: in order for this to work well, you must also set the manualLoad option to true in your Gatsby configuration, and load rudderstack in the browser gatsby file manually.
+
 In the above example, we are defining a `syncPixelCallback` on the analytics object before the call to load the SDK. This will lead to calling of this registered callback with the parameter `{destination: <destination_name>}` whenever a sync call is made from the SDK for relevant integrations like _Lotame_.
 
 The callback can be supplied in options parameter like below as well:
 
 ```javascript
-//define the callbacks directly on the load method like:
+// Define the callbacks directly on the load method like:
 rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL, {
   clientSuppliedCallbacks: {
     syncPixelCallback: () => {
