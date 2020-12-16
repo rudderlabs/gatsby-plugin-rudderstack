@@ -87,6 +87,7 @@ plugins: [
       // elsewhere in your code or are using a library
       // that will call it for you.
       // Useful for only loading the tracking script once a user has opted in to being tracked, for example.
+      // *Another use case is if you want to add callbacks to the methods at load time.
       manualLoad: false
     }
   }
@@ -183,7 +184,7 @@ You’ve now successfully installed `rudder-analytics.js` tracking. You can enab
 
 ## [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-4-check-ready-state)Step 4: Check Ready State
 
-There are cases when you may want to tap into the features provide by end destination SDKs to enhance tracking and other functionalities. RudderStack's JavaScript SDK exposes a `ready` API with a `callback` parameter, that fires when the SDK is done initializing itself and other third-party native SDK destinations.
+**There are cases when you may want to tap into the features provide by end destination SDKs to enhance tracking and other functionalities.** RudderStack's JavaScript SDK exposes a `ready` API with a `callback` parameter, that fires when the SDK is done initializing itself and other third-party native SDK destinations.
 
 For example:
 
