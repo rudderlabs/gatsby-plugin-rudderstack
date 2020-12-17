@@ -1,15 +1,15 @@
 <p align="center"><a href="https://rudderstack.com"><img src="https://raw.githubusercontent.com/rudderlabs/rudder-server/master/resources/RudderStack.png" alt="RudderStack - An Open Source Customer Data Platform" height="90"/></a></p>
 <h1 align="center">gatsby-plugin-rudderstack</h1>
-<p align="center"><b>The warehouse-first customer data platform built for devs</b></p>
+<p align="center"><b>The warehouse-first customer data platform built for devs.</b></p>
 <br/>
 
-# The Rudderstack Plugin for Gatsby
+# The Rudderstack Plugin for Gatsby.
 
 This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application.
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
-# Why Use this plugin
+# Why Use This plugin
 
 This plugin makes it easy to integrate your Gatsby website with the Rudderstack API and easily track events.
 
