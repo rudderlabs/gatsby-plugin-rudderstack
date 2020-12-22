@@ -1,15 +1,15 @@
 <p align="center"><a href="https://rudderstack.com"><img src="https://raw.githubusercontent.com/rudderlabs/rudder-server/master/resources/RudderStack.png" alt="RudderStack - An Open Source Customer Data Platform" height="90"/></a></p>
 <h1 align="center">gatsby-plugin-rudderstack</h1>
-<p align="center"><b>The warehouse-first customer data platform built for devs</b></p>
+<p align="center"><b>The warehouse-first customer data platform built for devs.</b></p>
 <br/>
 
-# The Rudderstack Plugin for Gatsby
+# The Rudderstack Plugin for Gatsby.
 
 This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application.
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
-# Why Use this plugin
+# Why Use This plugin
 
 This plugin makes it easy to integrate your Gatsby website with the Rudderstack API and easily track events.
 
@@ -87,6 +87,7 @@ plugins: [
       // elsewhere in your code or are using a library
       // that will call it for you.
       // Useful for only loading the tracking script once a user has opted in to being tracked, for example.
+      // *Another use case is if you want to add callbacks to the methods at load time.
       manualLoad: false
     }
   }
@@ -183,7 +184,7 @@ You’ve now successfully installed `rudder-analytics.js` tracking. You can enab
 
 ## [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-4-check-ready-state)Step 4: Check Ready State
 
-There are cases when you may want to tap into the features provide by end destination SDKs to enhance tracking and other functionalities. RudderStack's JavaScript SDK exposes a `ready` API with a `callback` parameter, that fires when the SDK is done initializing itself and other third-party native SDK destinations.
+**There are cases when you may want to tap into the features provide by end destination SDKs to enhance tracking and other functionalities.** RudderStack's JavaScript SDK exposes a `ready` API with a `callback` parameter, that fires when the SDK is done initializing itself and other third-party native SDK destinations.
 
 For example:
 
@@ -228,13 +229,11 @@ You may use the below parameters as querystring parameter and trigger the corres
 
 # [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#adding-callbacks-to-standard-methods)Adding Callbacks to Standard Methods
 
-## TODO: Update for Gatsby Use
-
 You can also define callbacks to the common methods of the `rudderanalytics` object.
 
 > **Note**: For now, the functionality is supported for `syncPixel` method which is called in the SDK when making sync calls in integrations for relevant destinations.
 
-For example:
+For example, you can load the rudderanalytics with callbacks in your Gatsby browser file:
 
 ```javascript
 window.rudderanalytics.syncPixelCallback = (obj) => {
@@ -246,12 +245,14 @@ window.rudderanalytics.syncPixelCallback = (obj) => {
 };
 ```
 
+Note: in order for this to work well, you must also set the manualLoad option to true in your Gatsby configuration, and load rudderstack in the browser gatsby file manually.
+
 In the above example, we are defining a `syncPixelCallback` on the analytics object before the call to load the SDK. This will lead to calling of this registered callback with the parameter `{destination: <destination_name>}` whenever a sync call is made from the SDK for relevant integrations like _Lotame_.
 
 The callback can be supplied in options parameter like below as well:
 
 ```javascript
-//define the callbacks directly on the load method like:
+// Define the callbacks directly on the load method like:
 rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL, {
   clientSuppliedCallbacks: {
     syncPixelCallback: () => {
