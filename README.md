@@ -56,11 +56,15 @@ plugins: [
       // track the page change, to implement this, make sure your `trackPage` property is set to `true`
       trackPageDelay: 50,
 
-      // If you need to proxy events through a custom endpoint,
+      // If you need to proxy events through a custom data plane,
       // add a `host` property (defaults to https://hosted.rudderlabs.com )
       // Rudderstack docs:
       //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#2-1-minified-code
       host: `https://override-rudderstack-endpoint`,
+
+      // Defaults to Null.
+      // This is for using a custom control plane.
+      controlPlaneUrl: null,
 
       // boolean (defaults to false); whether to delay load Rudderstack
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
