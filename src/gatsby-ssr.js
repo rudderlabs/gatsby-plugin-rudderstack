@@ -5,7 +5,8 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     trackPage,
     prodKey,
     devKey,
-    host = "https://hosted.rudderlabs.com",
+    dataPlaneUrl = "https://hosted.rudderlabs.com",
+    controlPlaneUrl,
     delayLoad,
     delayLoadTime,
     manualLoad,
@@ -31,12 +32,19 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   // NOTE: do not remove. This is used in gatsby-browser. per https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/18
   const includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
 
+  const loadConfig = controlPlaneUrl
+    ? `'${writeKey}', '${dataPlaneUrl}', {configUrl: '${controlPlaneUrl}'}`
+    : `'${writeKey}', '${dataPlaneUrl}'`;
+  /*
+    if (controlPlaneUrl) {
+      return `'${writeKey}', '${dataPlaneUrl}', {configUrl: '${controlPlaneUrl}'}`;
+    } else {
+      return `'${writeKey}', '${dataPlaneUrl}'`;
+    }
+  }; */
+
   const snippet = `rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
-  ${
-    delayLoad || manualLoad
-      ? ``
-      : `rudderanalytics.load('${writeKey}', '${host}')`
-  };
+  ${delayLoad || manualLoad ? `` : `rudderanalytics.load(${loadConfig})`};
 `;
 
   const delayedLoader = `
@@ -46,7 +54,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
         if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {
           window.rudderSnippetLoading = true;
           function loader() {
-            window.rudderanalytics.load('${writeKey}');
+            window.rudderanalytics.load(${loadConfig});
             window.rudderSnippetLoading = false;
             window.rudderSnippetLoaded = true;
             if(callback) {callback()}
