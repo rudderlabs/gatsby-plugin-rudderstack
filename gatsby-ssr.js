@@ -13,10 +13,10 @@ exports.onRenderBody = function (_ref, pluginOptions) {
       devKey = pluginOptions.devKey,
       _pluginOptions$dataPl = pluginOptions.dataPlaneUrl,
       dataPlaneUrl = _pluginOptions$dataPl === undefined ? "https://hosted.rudderlabs.com" : _pluginOptions$dataPl,
+      controlPlaneUrl = pluginOptions.controlPlaneUrl,
       delayLoad = pluginOptions.delayLoad,
       delayLoadTime = pluginOptions.delayLoadTime,
-      manualLoad = pluginOptions.manualLoad,
-      controlPlaneUrl = pluginOptions.controlPlaneUrl;
+      manualLoad = pluginOptions.manualLoad;
 
   if (!prodKey || prodKey.length < 10) console.error("Your Rudderstack prodKey must be at least 10 char in length.");
 
