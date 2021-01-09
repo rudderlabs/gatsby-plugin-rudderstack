@@ -6,10 +6,10 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     prodKey,
     devKey,
     dataPlaneUrl = "https://hosted.rudderlabs.com",
+    controlPlaneUrl,
     delayLoad,
     delayLoadTime,
     manualLoad,
-    controlPlaneUrl,
   } = pluginOptions;
 
   // ensures Rudderstack production write key is present
