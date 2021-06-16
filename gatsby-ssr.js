@@ -16,7 +16,8 @@ exports.onRenderBody = function (_ref, pluginOptions) {
       controlPlaneUrl = pluginOptions.controlPlaneUrl,
       delayLoad = pluginOptions.delayLoad,
       delayLoadTime = pluginOptions.delayLoadTime,
-      manualLoad = pluginOptions.manualLoad;
+      manualLoad = pluginOptions.manualLoad,
+      loadAsync = pluginOptions.loadAsync;
 
   if (!prodKey || prodKey.length < 10) console.error("Your Rudderstack prodKey must be at least 10 char in length.");
 
@@ -36,12 +37,20 @@ exports.onRenderBody = function (_ref, pluginOptions) {
   var snippetToUse = "\n      " + (delayLoad && !manualLoad ? delayedLoader : "") + "\n      " + snippet + "\n    ";
 
   if (writeKey) {
-    setHeadComponents([_react2.default.createElement("script", {
+    var tags = [_react2.default.createElement("script", {
       key: "plugin-rudderstack",
       dangerouslySetInnerHTML: { __html: snippetToUse }
-    }), _react2.default.createElement("script", {
+    })];
+
+    var tag = loadAsync ? _react2.default.createElement("script", { async: true,
       key: "rudderstack-cdn",
       src: "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
-    })]);
+    }) : _react2.default.createElement("script", {
+      key: "rudderstack-cdn",
+      src: "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+    });
+
+    tags.push(tag);
+    setHeadComponents(tags);
   }
 };
