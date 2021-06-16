@@ -94,6 +94,10 @@ plugins: [
       // Useful for only loading the tracking script once a user has opted in to being tracked, for example.
       // *Another use case is if you want to add callbacks to the methods at load time.
       manualLoad: false
+
+      // boolean (defaults to false); whether to load the RudderStack SDK async
+      // This loads the SDK as <script async></script> if set to true
+      loadAsync: false
     }
   }
 ];

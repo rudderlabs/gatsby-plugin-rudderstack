@@ -10,6 +10,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoad,
     delayLoadTime,
     manualLoad,
+    loadAsync
   } = pluginOptions;
 
   // ensures Rudderstack production write key is present
@@ -80,15 +81,24 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
   // only render snippet if write key exists
   if (writeKey) {
-    setHeadComponents([
+    let tags = [
       <script
         key="plugin-rudderstack"
         dangerouslySetInnerHTML={{ __html: snippetToUse }}
-      />,
-      <script
+      />
+    ]
+
+    let tag = loadAsync
+      ? <script async
         key="rudderstack-cdn"
         src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
-      ></script>,
-    ]);
+      ></script>
+      : <script
+        key="rudderstack-cdn"
+        src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+    ></script>
+
+    tags.push(tag)
+    setHeadComponents(tags);
   }
 };
