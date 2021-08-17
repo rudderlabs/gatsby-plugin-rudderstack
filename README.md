@@ -95,9 +95,11 @@ plugins: [
       // *Another use case is if you want to add callbacks to the methods at load time.
       manualLoad: false
 
-      // boolean (defaults to false); whether to load the RudderStack SDK async
-      // This loads the SDK as <script async></script> if set to true
-      loadAsync: false
+      // string ('async' or 'defer'); whether to load the RudderStack SDK async or defer. Anything else
+      // will load normally.
+      // 'async' will load the SDK as <script async></script>
+      // 'defer' will load the SDK as <script defer></script>
+      loadType: 'default'
     }
   }
 ];

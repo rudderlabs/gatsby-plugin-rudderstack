@@ -10,7 +10,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoad,
     delayLoadTime,
     manualLoad,
-    loadAsync
+    loadType
   } = pluginOptions;
 
   // ensures Rudderstack production write key is present
@@ -88,15 +88,24 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
       />
     ]
 
-    let tag = loadAsync
-      ? <script async
+    let tag;
+
+    if (loadType == 'async') {
+      tag = <script async
         key="rudderstack-cdn"
         src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
       ></script>
-      : <script
+    } else if (loadType == 'defer') {
+      tag = <script defer
+        key="rudderstack-cdn"
+        src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+      ></script>
+    } else {
+      tag = <script
         key="rudderstack-cdn"
         src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
     ></script>
+    }
 
     tags.push(tag)
     setHeadComponents(tags);
