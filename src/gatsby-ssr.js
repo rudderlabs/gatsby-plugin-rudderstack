@@ -10,8 +10,14 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoad,
     delayLoadTime,
     manualLoad,
-    loadType
+    loadType,
+    useNewSDK
   } = pluginOptions;
+
+  var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
+  if (useNewSDK) {
+    sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
+  }
 
   // ensures Rudderstack production write key is present
   if (!prodKey || prodKey.length < 10)
@@ -93,17 +99,17 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     if (loadType == 'async') {
       tag = <script async
         key="rudderstack-cdn"
-        src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+        src={ sdkSrc }
       ></script>
     } else if (loadType == 'defer') {
       tag = <script defer
         key="rudderstack-cdn"
-        src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+        src={ sdkSrc }
       ></script>
     } else {
       tag = <script
         key="rudderstack-cdn"
-        src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"
+        src={ sdkSrc }
     ></script>
     }
 
