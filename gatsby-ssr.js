@@ -32,12 +32,14 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   var writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
+  var includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
+
   var loadConfig = controlPlaneUrl ? "'" + writeKey + "', '" + dataPlaneUrl + "', {configUrl: '" + controlPlaneUrl + "'}" : "'" + writeKey + "', '" + dataPlaneUrl + "'";
 
 
   var snippet = "rudderanalytics=window.rudderanalytics=[];for(var methods=[\"load\",\"page\",\"track\",\"identify\",\"alias\",\"group\",\"ready\",\"reset\",\"getAnonymousId\",\"setAnonymousId\"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}\n  " + (delayLoad || manualLoad ? "" : "rudderanalytics.load(" + loadConfig + ")") + ";\n";
 
-  var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          function loader() {\n            window.rudderanalytics.load(" + loadConfig + ");\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if(callback) {callback()}\n          };\n          setTimeout(\n            function () {\n              loader();\n            },\n            " + delayLoadTime + " || 1000\n          );\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n    ";
+  var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          function loader() {\n            window.rudderanalytics.load(" + loadConfig + ");\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if(callback) {callback()}\n          };\n          setTimeout(\n            function () {\n              \"requestIdleCallback\" in window\n                ? requestIdleCallback(function () {loader()})\n                : loader();\n            },\n            " + delayLoadTime + " || 1000\n          );\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n    ";
 
   var snippetToUse = "\n      " + (delayLoad && !manualLoad ? delayedLoader : "") + "\n      " + snippet + "\n    ";
 
