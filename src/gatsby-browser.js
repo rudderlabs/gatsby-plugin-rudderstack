@@ -12,6 +12,7 @@ exports.onRouteUpdate = (
 
     window.setTimeout(() => {
       if (trackPage) {
+        window.rudderSnippetLoader();
         window.rudderanalytics && window.rudderanalytics.page(document.title);
       }
     }, delay);
