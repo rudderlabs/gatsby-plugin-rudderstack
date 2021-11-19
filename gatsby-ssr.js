@@ -32,8 +32,6 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   var writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  var includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
-
   var loadConfig = controlPlaneUrl ? "'" + writeKey + "', '" + dataPlaneUrl + "', {configUrl: '" + controlPlaneUrl + "'}" : "'" + writeKey + "', '" + dataPlaneUrl + "'";
 
 
