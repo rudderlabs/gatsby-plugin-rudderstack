@@ -60,6 +60,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
             window.rudderanalytics.load(${loadConfig});
             window.rudderSnippetLoading = false;
             window.rudderSnippetLoaded = true;
+            window.rudderanalytics.page(document.title);
             if(callback) {callback()}
           };
           setTimeout(
