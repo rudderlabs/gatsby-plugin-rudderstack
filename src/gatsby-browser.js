@@ -20,12 +20,9 @@ exports.onRouteUpdate = (
   // Track only non-home page views
   if (prevLocation) {
     if (window.rudderSnippetLoaded === false && window.rudderSnippetLoading === false) {
-      window.rudderSnippetLoader(function () {
-        trackRudderstackPage();
-      });
+      window.rudderSnippetLoader();
     } else {
       trackRudderstackPage();
     }
   }
-};
 };
