@@ -16,11 +16,12 @@ exports.onRouteUpdate = function (_ref, _ref2) {
     }, delay);
   }
 
-  if (prevLocation && window.rudderSnippetLoaded === false) {
-    window.rudderSnippetLoader(function () {
+  // Track only non-home page views
+  if (prevLocation) {
+    if (window.rudderSnippetLoaded === false && window.rudderSnippetLoading === false) {
+      window.rudderSnippetLoader();
+    } else {
       trackRudderstackPage();
-    });
-  } else {
-    trackRudderstackPage();
+    }
   }
 };

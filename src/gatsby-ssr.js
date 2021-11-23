@@ -35,10 +35,6 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   // note below, snippet wont render unless writeKey is truthy
   const writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  // if trackPage option is falsy (undefined or false), remove rudderanalytics.page(), else keep it in by default
-  // NOTE: do not remove. This is used in gatsby-browser. per https://github.com/benjaminhoffman/gatsby-plugin-segment-js/pull/18
-  const includeTrackPage = !trackPage ? "" : "rudderanalytics.page();";
-
   const loadConfig = controlPlaneUrl
     ? `'${writeKey}', '${dataPlaneUrl}', {configUrl: '${controlPlaneUrl}'}`
     : `'${writeKey}', '${dataPlaneUrl}'`;
@@ -64,6 +60,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
             window.rudderanalytics.load(${loadConfig});
             window.rudderSnippetLoading = false;
             window.rudderSnippetLoaded = true;
+            window.rudderanalytics.page(document.title);
             if(callback) {callback()}
           };
           setTimeout(

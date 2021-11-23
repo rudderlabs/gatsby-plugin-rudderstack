@@ -17,14 +17,12 @@ exports.onRouteUpdate = (
     }, delay);
   }
 
-  // This `if/then` logic relates to the `delayLoad` functionality to help prevent
-  // calling `trackPage` twice. If you don't use that feature, you can ignore.
-  // Here call `trackPage` only _after_ we change routes (on the client).
-  if (prevLocation && window.rudderSnippetLoaded === false) {
-    window.rudderSnippetLoader(() => {
+  // Track only non-home page views
+  if (prevLocation) {
+    if (window.rudderSnippetLoaded === false && window.rudderSnippetLoading === false) {
+      window.rudderSnippetLoader();
+    } else {
       trackRudderstackPage();
-    });
-  } else {
-    trackRudderstackPage();
+    }
   }
 };
