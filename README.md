@@ -3,21 +3,21 @@
 <p align="center"><b>The warehouse-first customer data platform built for devs.</b></p>
 <br/>
 
-# The Rudderstack Plugin for Gatsby.
+# The RudderStack Plugin for Gatsby.
 
-This is a way for you to quickly and easily get Rudderstack up and running in your Gatsby application.
+This is a way for you to quickly and easily get RudderStack up and running in your Gatsby application.
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
 # Why Use This plugin
 
-This plugin makes it easy to integrate your Gatsby website with the Rudderstack API and easily track events.
+This plugin makes it easy to integrate your Gatsby website with the RudderStack API and easily track events.
 
 # Key Features
 
 - use multiple write keys (one for prod env, another optional one for dev)
 - disable page view tracking (just in case you want to add it later manually)
-- up to date (Rudderstack team maintained)
+- up to date (RudderStack team maintained)
 
 ## Install
 
@@ -56,26 +56,31 @@ plugins: [
       // track the page change, to implement this, make sure your `trackPage` property is set to `true`
       trackPageDelay: 50,
 
+      // array; Arguments to the analytics.page()
+      // when `trackPage` is set to `true`
+      // Note: Only certain data types are allowed
+      // https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/configuring-usage-with-plugin-options/
+      trackPageParams: [],
+
       // If you need to proxy events through a custom data plane,
       // add a `dataPlaneUrl` property (defaults to https://hosted.rudderlabs.com )
-      // Rudderstack docs:
+      // RudderStack docs:
       //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#3-1-load
       dataPlaneUrl: `https://override-rudderstack-endpoint`,
 
       // Add a `controlPlaneUrl` property if you are self-hosting the Control Plane
-      // Rudderstack docs:
+      // RudderStack docs:
       //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#3-1-1-self-hosted-control-plane
       controlPlaneUrl: `https://override-control-plane-url`,
 
-      // boolean (defaults to false); whether to delay load Rudderstack
+      // boolean (defaults to false); whether to delay load RudderStack
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
-      // This feature will force Rudderstack to load _after_ either a page routing change
-      // or user scroll, whichever comes first. This delay time is controlled by
-      // `delayLoadTime` setting. This feature is used to help improve your website's
+      // This feature will force RudderStack to load _after_ either a page routing change
+      // or user scroll, or after `delayLoadTime` elapses, whichever comes first. This feature is used to help improve your website's
       // TTI (for SEO, UX, etc).  See links below for more info.
       // NOTE: But if you are using server-side routing and enable this feature,
-      // Rudderstack will never load (because although client-side routing does not do
-      // a full page refresh, server-side routing does, thereby preventing Rudderstack
+      // RudderStack will never load (because although client-side routing does not do
+      // a full page refresh, server-side routing does, thereby preventing RudderStack
       // from ever loading).
       // See here for more context:
       // GIF: https://github.com/benjaminhoffman/gatsby-plugin-segment/pull/19#issuecomment-559569483
@@ -83,7 +88,8 @@ plugins: [
       // Problem/solution: https://marketingexamples.com/seo/performance
       delayLoad: false,
 
-      // number (default to 1000); time to wait after scroll or route change
+      // number (default to 1000); time to wait after the page loads
+      // to load the RudderStack SDK
       // To be used when `delayLoad` is set to `true`
       delayLoadTime: 1000
 

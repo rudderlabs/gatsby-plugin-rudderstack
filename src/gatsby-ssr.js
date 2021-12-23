@@ -53,6 +53,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   const delayedLoader = `
       window.rudderSnippetLoaded = false;
       window.rudderSnippetLoading = false;
+      window.rudderSnippetLoadedCallback = undefined;
       window.rudderSnippetLoader = function (callback) {
         if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {
           window.rudderSnippetLoading = true;
@@ -60,22 +61,28 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
             window.rudderanalytics.load(${loadConfig});
             window.rudderSnippetLoading = false;
             window.rudderSnippetLoaded = true;
-            if (${trackPage})
-              window.rudderanalytics.page(document.title);
-            if (callback) {callback()}
+            if (callback) { callback(); }
+            if (window.rudderSnippetLoadedCallback) {
+              window.rudderSnippetLoadedCallback();
+              window.rudderSnippetLoadedCallback = undefined;
+            }
           };
-          setTimeout(
-            function () {
-              "requestIdleCallback" in window
-                ? requestIdleCallback(function () {loader()})
-                : loader();
-            },
-            ${delayLoadTime} || 1000
-          );
+
+          "requestIdleCallback" in window
+            ? requestIdleCallback(function () { loader(); })
+            : loader();
         }
       }
       window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });
-    `;
+      setTimeout(
+        function () {
+          "requestIdleCallback" in window
+            ? requestIdleCallback(function () { window.rudderSnippetLoader(); })
+            : window.rudderSnippetLoader();
+        },
+        ${delayLoadTime} || 1000
+      );
+      `;
 
   // if `delayLoad` option is true, use the delayed loader
   const snippetToUse = `
