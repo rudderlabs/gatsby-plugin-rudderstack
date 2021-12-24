@@ -56,12 +56,6 @@ plugins: [
       // track the page change, to implement this, make sure your `trackPage` property is set to `true`
       trackPageDelay: 50,
 
-      // array; Arguments to the analytics.page()
-      // when `trackPage` is set to `true`
-      // Note: Only certain data types are allowed
-      // https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/configuring-usage-with-plugin-options/
-      trackPageParams: [],
-
       // If you need to proxy events through a custom data plane,
       // add a `dataPlaneUrl` property (defaults to https://hosted.rudderlabs.com )
       // RudderStack docs:
@@ -196,6 +190,8 @@ exports.onRouteUpdate = () => {
   window.rudderanalytics && window.rudderanalytics.page();
 };
 ```
+
+Note: The above code snippet might not give the best results all the time as it doesn't take various SDK loading scenarios into consideration. Hence, if you are not tracking page views automatically, then clone the contents of the `gatsby-browser.js` from the package and make necessary modifications.
 
 You’ve now successfully installed `rudder-analytics.js` tracking. You can enable and use any event destination to send your event data via RudderStack, in no time at all!
 

@@ -3,18 +3,16 @@ exports.onRouteUpdate = (
   { prevLocation },
   { trackPage, trackPageDelay = 50 }
 ) => {
-  var trackPageParams = Array.isArray(_ref2.trackPageParams) ? _ref2.trackPageParams : [document.title];
-
   function trackRudderStackPage() {
     if (trackPage) {
       // Adding a delay (defaults to 50ms when not provided by plugin option `trackPageDelay`)
-      // ensure that the Rudderstack route tracking is in sync with the actual Gatsby route
-      // (otherwise you can end up in a state where the Rudderstack page tracking reports
+      // ensure that the RudderStack route tracking is in sync with the actual Gatsby route
+      // (otherwise you can end up in a state where the RudderStack page tracking reports
       // the previous page on route change).
       var delay = Math.max(0, trackPageDelay);
 
       window.setTimeout(function () {
-        window.rudderanalytics && window.rudderanalytics.page(...trackPageParams);
+        window.rudderanalytics && window.rudderanalytics.page(document.title);
       }, delay);
     }
   }
