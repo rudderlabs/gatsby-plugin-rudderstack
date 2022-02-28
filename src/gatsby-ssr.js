@@ -11,7 +11,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoadTime,
     manualLoad,
     loadType,
-    useNewSDK
+    useNewSDK,
   } = pluginOptions;
 
   var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
@@ -19,16 +19,16 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
   }
 
-  // ensures Rudderstack production write key is present
+  // ensures RudderStack production write key is present
   if (!prodKey || prodKey.length < 10)
     console.error(
-      "Your Rudderstack prodKey must be at least 10 char in length."
+      "Your RudderStack prodKey must be at least 10 char in length."
     );
 
-  // if Rudderstack dev key is present, ensures it is at least 10 characters in length
+  // if RudderStack dev key is present, ensures it is at least 10 characters in length
   if (devKey && devKey.length < 10)
     console.error(
-      "If present, your Rudderstack devKey must be at least 10 char in length."
+      "If present, your RudderStack devKey must be at least 10 char in length."
     );
 
   // use prod write key when in prod env, else use dev write key
@@ -96,29 +96,20 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
       <script
         key="plugin-rudderstack"
         dangerouslySetInnerHTML={{ __html: snippetToUse }}
-      />
-    ]
+      />,
+    ];
 
     let tag;
 
-    if (loadType == 'async') {
-      tag = <script async
-        key="rudderstack-cdn"
-        src={ sdkSrc }
-      ></script>
-    } else if (loadType == 'defer') {
-      tag = <script defer
-        key="rudderstack-cdn"
-        src={ sdkSrc }
-      ></script>
+    if (loadType == "async") {
+      tag = <script async key="rudderstack-cdn" src={sdkSrc}></script>;
+    } else if (loadType == "defer") {
+      tag = <script defer key="rudderstack-cdn" src={sdkSrc}></script>;
     } else {
-      tag = <script
-        key="rudderstack-cdn"
-        src={ sdkSrc }
-    ></script>
+      tag = <script key="rudderstack-cdn" src={sdkSrc}></script>;
     }
 
-    tags.push(tag)
+    tags.push(tag);
     setHeadComponents(tags);
   }
 };

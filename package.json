@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-rudderstack",
-  "version": "1.0.5",
-  "description": "Event tracking with Rudderstack in your Gatsby frontend.",
+  "version": "1.1.0",
+  "description": "Event tracking with RudderStack in your Gatsby frontend.",
   "main": "gatsby-ssr.js",
   "scripts": {
     "build": "babel src --out-dir . --ignore __tests__",
@@ -18,7 +18,7 @@
     "gatsby",
     "gatsby-plugin"
   ],
-  "author": "Rudderstack",
+  "author": "RudderStack",
   "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/rudderlabs/gatsby-plugin-rudderstack/issues"
