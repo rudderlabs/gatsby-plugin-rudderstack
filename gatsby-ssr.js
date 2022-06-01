@@ -24,10 +24,12 @@ exports.onRenderBody = function (_ref, pluginOptions) {
     manualLoad = pluginOptions.manualLoad,
     loadType = pluginOptions.loadType,
     useNewSDK = pluginOptions.useNewSDK,
-    loadOptions = pluginOptions.loadOptions;
+    loadOptions = pluginOptions.loadOptions,
+    sdkURL = pluginOptions.sdkURL;
 
   var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
-  if (useNewSDK) {
+  if (sdkURL) sdkSrc = sdkURL;
+  else if (useNewSDK) {
     sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
   }
 
