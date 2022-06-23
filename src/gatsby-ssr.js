@@ -13,12 +13,15 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     loadType,
     useNewSDK,
     sdkURL,
+    useBetaSDK,
   } = pluginOptions;
 
   var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
   if (sdkURL) sdkSrc = sdkURL;
   else if (useNewSDK) {
     sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
+  } else if (useBetaSDK) {
+    sdkSrc = "https://cdn.rudderlabs.com/v1.1/beta/rudder-analytics.min.js";
   }
 
   // ensures RudderStack production write key is present

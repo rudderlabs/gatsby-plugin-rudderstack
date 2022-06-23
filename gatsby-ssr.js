@@ -24,6 +24,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
     manualLoad = pluginOptions.manualLoad,
     loadType = pluginOptions.loadType,
     useNewSDK = pluginOptions.useNewSDK,
+    useBetaSDK = pluginOptions.useBetaSDK,
     loadOptions = pluginOptions.loadOptions,
     sdkURL = pluginOptions.sdkURL;
 
@@ -31,6 +32,8 @@ exports.onRenderBody = function (_ref, pluginOptions) {
   if (sdkURL) sdkSrc = sdkURL;
   else if (useNewSDK) {
     sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
+  } else if (useBetaSDK) {
+    sdkSrc = "https://cdn.rudderlabs.com/v1.1/beta/rudder-analytics.min.js";
   }
 
   if (!prodKey || prodKey.length < 10)
