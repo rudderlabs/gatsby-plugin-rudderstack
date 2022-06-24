@@ -24,12 +24,15 @@ exports.onRenderBody = function (_ref, pluginOptions) {
     manualLoad = pluginOptions.manualLoad,
     loadType = pluginOptions.loadType,
     useNewSDK = pluginOptions.useNewSDK,
+    useBetaSDK = pluginOptions.useBetaSDK,
     loadOptions = pluginOptions.loadOptions,
     sdkURL = pluginOptions.sdkURL;
 
   var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
   if (sdkURL) sdkSrc = sdkURL;
-  else if (useNewSDK) {
+  else if (useBetaSDK) {
+    sdkSrc = "https://cdn.rudderlabs.com/v1.1/beta/rudder-analytics.min.js";
+  } else if (useNewSDK) {
     sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
   }
 
