@@ -14,6 +14,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     useNewSDK,
     sdkURL,
     useBetaSDK,
+    loadOptions = {},
   } = pluginOptions;
 
   var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
@@ -40,20 +41,25 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   // note below, snippet wont render unless writeKey is truthy
   const writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  const loadConfig = controlPlaneUrl
-    ? `'${writeKey}', '${dataPlaneUrl}', {configUrl: '${controlPlaneUrl}'}`
-    : `'${writeKey}', '${dataPlaneUrl}'`;
-  /*
-    if (controlPlaneUrl) {
-      return `'${writeKey}', '${dataPlaneUrl}', {configUrl: '${controlPlaneUrl}'}`;
-    } else {
-      return `'${writeKey}', '${dataPlaneUrl}'`;
-    }
-  }; */
+  if (controlPlaneUrl) {
+    loadOptions.configUrl = controlPlaneUrl;
+  }
+
+  const loadConfig = `'${writeKey}', '${dataPlaneUrl}',` + JSON.stringify(loadOptions);
 
   const snippet = `rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
-  ${delayLoad || manualLoad ? `` : `rudderanalytics.load(${loadConfig})`};
+  var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "${sdkSrc}";
+    if ("${loadType}" == "async") {
+      s.async = true;
+    } else if ("${loadType}" == "defer") {
+      s.defer = true;
+    }
+    document.head.appendChild(s);
 `;
+
+const instantLoad = `${snippet}${delayLoad || manualLoad ? `` : `rudderanalytics.load(${loadConfig})`};`;
 
   const delayedLoader = `
       window.rudderSnippetLoaded = false;
@@ -62,6 +68,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
       window.rudderSnippetLoader = function (callback) {
         if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {
           window.rudderSnippetLoading = true;
+          ${snippet}
           function loader() {
             window.rudderanalytics.load(${loadConfig});
             window.rudderSnippetLoading = false;
@@ -90,10 +97,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
       `;
 
   // if `delayLoad` option is true, use the delayed loader
-  const snippetToUse = `
-      ${delayLoad && !manualLoad ? delayedLoader : ""}
-      ${snippet}
-    `;
+  const snippetToUse = `${delayLoad && !manualLoad ? delayedLoader : instantLoad}`;
 
   // only render snippet if write key exists
   if (writeKey) {
@@ -104,17 +108,6 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
       />,
     ];
 
-    let tag;
-
-    if (loadType == "async") {
-      tag = <script async key="rudderstack-cdn" src={sdkSrc}></script>;
-    } else if (loadType == "defer") {
-      tag = <script defer key="rudderstack-cdn" src={sdkSrc}></script>;
-    } else {
-      tag = <script key="rudderstack-cdn" src={sdkSrc}></script>;
-    }
-
-    tags.push(tag);
     setHeadComponents(tags);
   }
 };
