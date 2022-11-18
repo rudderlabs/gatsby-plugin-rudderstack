@@ -59,7 +59,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     document.head.appendChild(s);
 `;
 
-const instantLoad = `${snippet}${delayLoad || manualLoad ? `` : `rudderanalytics.load(${loadConfig})`};`;
+const instantLoader = `${snippet}${delayLoad || manualLoad ? `` : `rudderanalytics.load(${loadConfig})`};`;
 
   const delayedLoader = `
       window.rudderSnippetLoaded = false;
