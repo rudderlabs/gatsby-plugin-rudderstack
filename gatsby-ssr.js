@@ -18,19 +18,13 @@ exports.onRenderBody = function (_ref, pluginOptions) {
       delayLoadTime = pluginOptions.delayLoadTime,
       manualLoad = pluginOptions.manualLoad,
       loadType = pluginOptions.loadType,
-      useNewSDK = pluginOptions.useNewSDK,
       sdkURL = pluginOptions.sdkURL,
-      useBetaSDK = pluginOptions.useBetaSDK,
       _pluginOptions$loadOp = pluginOptions.loadOptions,
       loadOptions = _pluginOptions$loadOp === undefined ? {} : _pluginOptions$loadOp;
 
 
-  var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
-  if (sdkURL) sdkSrc = sdkURL;else if (useBetaSDK) {
-    sdkSrc = "https://cdn.rudderlabs.com/v1.1/beta/rudder-analytics.min.js";
-  } else if (useNewSDK) {
-    sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
-  }
+  var sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
+  if (sdkURL) sdkSrc = sdkURL;
 
   if (!prodKey || prodKey.length < 10) console.error("Your RudderStack prodKey must be at least 10 char in length.");
 
@@ -38,19 +32,25 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   var writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  if (controlPlaneUrl) {
-    loadOptions.configUrl = controlPlaneUrl;
+  loadOptions.configUrl = controlPlaneUrl || loadOptions.configUrl;
+
+  var loadConfig = "'" + writeKey + "', '" + dataPlaneUrl + "', " + JSON.stringify(loadOptions);
+
+  var scriptTagStr = "var s = document.createElement(\"script\");\n    s.type = \"text/javascript\";\n    s.src = \"" + sdkSrc + "\";";
+  if (loadType === "async") {
+    scriptTagStr += "s.async = true;";
+  } else if (loadType === "defer") {
+    scriptTagStr += "s.defer = true;";
   }
+  scriptTagStr += "document.head.appendChild(s);";
 
-  var loadConfig = "'" + writeKey + "', '" + dataPlaneUrl + "'," + JSON.stringify(loadOptions);
+  var snippet = "rudderanalytics=window.rudderanalytics=[];for(var methods=[\"load\",\"page\",\"track\",\"identify\",\"alias\",\"group\",\"ready\",\"reset\",\"getAnonymousId\",\"setAnonymousId\"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}\n  " + scriptTagStr + "\n";
 
-  var snippet = "rudderanalytics=window.rudderanalytics=[];for(var methods=[\"load\",\"page\",\"track\",\"identify\",\"alias\",\"group\",\"ready\",\"reset\",\"getAnonymousId\",\"setAnonymousId\"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}\n  var s = document.createElement(\"script\");\n    s.type = \"text/javascript\";\n    s.src = \"" + sdkSrc + "\";\n    if (\"" + loadType + "\" == \"async\") {\n      s.async = true;\n    } else if (\"" + loadType + "\" == \"defer\") {\n      s.defer = true;\n    }\n    document.head.appendChild(s);\n";
+  var instantLoader = "" + snippet + (delayLoad || manualLoad ? "" : "rudderanalytics.load(" + loadConfig + ")") + ";";
 
-  var instantLoad = "" + snippet + (delayLoad || manualLoad ? "" : "rudderanalytics.load(" + loadConfig + ")") + ";";
+  var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoadedCallback = undefined;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          function loader() {\n            " + snippet + "\n            window.rudderanalytics.load(" + loadConfig + ");\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if (callback) { callback(); }\n            if (window.rudderSnippetLoadedCallback) {\n              window.rudderSnippetLoadedCallback();\n              window.rudderSnippetLoadedCallback = undefined;\n            }\n          };\n\n          \"requestIdleCallback\" in window\n            ? requestIdleCallback(function () { loader(); })\n            : loader();\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n      setTimeout(\n        function () {\n          \"requestIdleCallback\" in window\n            ? requestIdleCallback(function () { window.rudderSnippetLoader(); })\n            : window.rudderSnippetLoader();\n        },\n        " + delayLoadTime + " || 1000\n      );\n      ";
 
-  var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoadedCallback = undefined;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          " + snippet + "\n          function loader() {\n            window.rudderanalytics.load(" + loadConfig + ");\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if (callback) { callback(); }\n            if (window.rudderSnippetLoadedCallback) {\n              window.rudderSnippetLoadedCallback();\n              window.rudderSnippetLoadedCallback = undefined;\n            }\n          };\n\n          \"requestIdleCallback\" in window\n            ? requestIdleCallback(function () { loader(); })\n            : loader();\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n      setTimeout(\n        function () {\n          \"requestIdleCallback\" in window\n            ? requestIdleCallback(function () { window.rudderSnippetLoader(); })\n            : window.rudderSnippetLoader();\n        },\n        " + delayLoadTime + " || 1000\n      );\n      ";
-
-  var snippetToUse = "" + (delayLoad && !manualLoad ? delayedLoader : instantLoad);
+  var snippetToUse = "" + (delayLoad && !manualLoad ? delayedLoader : instantLoader);
 
   if (writeKey) {
     var tags = [_react2.default.createElement("script", {

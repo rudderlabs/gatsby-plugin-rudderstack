@@ -11,19 +11,12 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoadTime,
     manualLoad,
     loadType,
-    useNewSDK,
     sdkURL,
-    useBetaSDK,
     loadOptions = {},
   } = pluginOptions;
 
-  var sdkSrc = "https://cdn.rudderlabs.com/v1/rudder-analytics.min.js";
+  var sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
   if (sdkURL) sdkSrc = sdkURL;
-  else if (useBetaSDK) {
-    sdkSrc = "https://cdn.rudderlabs.com/v1.1/beta/rudder-analytics.min.js";
-  } else if (useNewSDK) {
-    sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
-  }
 
   // ensures RudderStack production write key is present
   if (!prodKey || prodKey.length < 10)
@@ -41,22 +34,23 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   // note below, snippet wont render unless writeKey is truthy
   const writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  if (controlPlaneUrl) {
-    loadOptions.configUrl = controlPlaneUrl;
-  }
+  // Override config URL if provided separately
+  loadOptions.configUrl = controlPlaneUrl || loadOptions.configUrl;
 
   const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(loadOptions)}`;
 
-  const snippet = `rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
-  var s = document.createElement("script");
+  let scriptTagStr = `var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = "${sdkSrc}";
-    if ("${loadType}" == "async") {
-      s.async = true;
-    } else if ("${loadType}" == "defer") {
-      s.defer = true;
-    }
-    document.head.appendChild(s);
+    s.src = "${sdkSrc}";`;
+  if (loadType === "async") {
+    scriptTagStr += "s.async = true;";
+  } else if (loadType === "defer") {
+    scriptTagStr += "s.defer = true;";
+  }
+  scriptTagStr += "document.head.appendChild(s);";
+
+  const snippet = `rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
+  ${scriptTagStr}
 `;
 
 const instantLoader = `${snippet}${delayLoad || manualLoad ? `` : `rudderanalytics.load(${loadConfig})`};`;
@@ -68,8 +62,8 @@ const instantLoader = `${snippet}${delayLoad || manualLoad ? `` : `rudderanalyti
       window.rudderSnippetLoader = function (callback) {
         if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {
           window.rudderSnippetLoading = true;
-          ${snippet}
           function loader() {
+            ${snippet}
             window.rudderanalytics.load(${loadConfig});
             window.rudderSnippetLoading = false;
             window.rudderSnippetLoaded = true;
@@ -97,7 +91,7 @@ const instantLoader = `${snippet}${delayLoad || manualLoad ? `` : `rudderanalyti
       `;
 
   // if `delayLoad` option is true, use the delayed loader
-  const snippetToUse = `${delayLoad && !manualLoad ? delayedLoader : instantLoad}`;
+  const snippetToUse = `${delayLoad && !manualLoad ? delayedLoader : instantLoader}`;
 
   // only render snippet if write key exists
   if (writeKey) {
