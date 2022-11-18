@@ -45,7 +45,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     loadOptions.configUrl = controlPlaneUrl;
   }
 
-  const loadConfig = `'${writeKey}', '${dataPlaneUrl}',` + JSON.stringify(loadOptions);
+  const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(loadOptions)}`;
 
   const snippet = `rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
   var s = document.createElement("script");
