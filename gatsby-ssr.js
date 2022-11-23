@@ -23,8 +23,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
       loadOptions = _pluginOptions$loadOp === undefined ? {} : _pluginOptions$loadOp;
 
 
-  var sdkSrc = "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
-  if (sdkURL) sdkSrc = sdkURL;
+  var sdkSrc = sdkURL || "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
 
   if (!prodKey || prodKey.length < 10) console.error("Your RudderStack prodKey must be at least 10 char in length.");
 
