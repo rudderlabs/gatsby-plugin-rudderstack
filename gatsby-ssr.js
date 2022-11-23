@@ -33,7 +33,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   const loadOpts = { ...loadOptions, configUrl: controlPlaneUrl || loadOptions.configUrl };
 
-  var loadConfig = "'" + writeKey + "', '" + dataPlaneUrl + "', " + JSON.stringify(loadOptions);
+  var loadConfig = "'" + writeKey + "', '" + dataPlaneUrl + "', " + JSON.stringify(loadOpts);
 
   var scriptTagStr = "var s = document.createElement(\"script\");\n    s.type = \"text/javascript\";\n    s.src = \"" + sdkSrc + "\";";
   if (loadType === "async") {
