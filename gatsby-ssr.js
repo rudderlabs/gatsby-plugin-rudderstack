@@ -31,7 +31,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
 
   var writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
-  loadOptions.configUrl = controlPlaneUrl || loadOptions.configUrl;
+  const loadOpts = { ...loadOptions, configUrl: controlPlaneUrl || loadOptions.configUrl };
 
   var loadConfig = "'" + writeKey + "', '" + dataPlaneUrl + "', " + JSON.stringify(loadOptions);
 
