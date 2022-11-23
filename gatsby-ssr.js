@@ -7,8 +7,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 exports.onRenderBody = function (_ref, pluginOptions) {
   var setHeadComponents = _ref.setHeadComponents;
-  var trackPage = pluginOptions.trackPage,
-    prodKey = pluginOptions.prodKey,
+  var prodKey = pluginOptions.prodKey,
     devKey = pluginOptions.devKey,
     _pluginOptions$dataPl = pluginOptions.dataPlaneUrl,
     dataPlaneUrl = _pluginOptions$dataPl === void 0 ? "https://hosted.rudderlabs.com" : _pluginOptions$dataPl,

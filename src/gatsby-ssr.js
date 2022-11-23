@@ -2,7 +2,6 @@ import React from "react";
 
 exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   const {
-    trackPage,
     prodKey,
     devKey,
     dataPlaneUrl = "https://hosted.rudderlabs.com",
