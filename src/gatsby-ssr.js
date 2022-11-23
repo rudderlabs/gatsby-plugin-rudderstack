@@ -35,9 +35,9 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   const writeKey = process.env.NODE_ENV === "production" ? prodKey : devKey;
 
   // Override config URL if provided separately
-  loadOptions.configUrl = controlPlaneUrl || loadOptions.configUrl;
+  const finalLoadOptions = { ...loadOptions, configUrl: controlPlaneUrl || loadOptions.configUrl };
 
-  const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(loadOptions)}`;
+  const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(finalLoadOptions)}`;
 
   let scriptTagStr = `var s = document.createElement("script");
     s.type = "text/javascript";
