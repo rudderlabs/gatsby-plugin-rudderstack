@@ -16,11 +16,10 @@ exports.onRenderBody = function (_ref, pluginOptions) {
     delayLoadTime = pluginOptions.delayLoadTime,
     manualLoad = pluginOptions.manualLoad,
     loadType = pluginOptions.loadType,
-    sdkURL = pluginOptions.sdkURL,
+    _pluginOptions$sdkURL = pluginOptions.sdkURL,
+    sdkURL = _pluginOptions$sdkURL === void 0 ? "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js" : _pluginOptions$sdkURL,
     _pluginOptions$loadOp = pluginOptions.loadOptions,
     loadOptions = _pluginOptions$loadOp === void 0 ? {} : _pluginOptions$loadOp;
-  var sdkSrc = sdkURL || "https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";
-  if (sdkURL) sdkSrc = sdkURL;
 
   if (!prodKey || prodKey.length < 10) console.error("Your RudderStack prodKey must be at least 10 char in length.");
 
@@ -32,7 +31,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
     configUrl: controlPlaneUrl || loadOptions.configUrl
   });
   var loadConfig = "'".concat(writeKey, "', '").concat(dataPlaneUrl, "', ").concat(JSON.stringify(finalLoadOptions));
-  var scriptTagStr = "var s = document.createElement(\"script\");\n    s.type = \"text/javascript\";\n    s.src = \"".concat(sdkSrc, "\";");
+  var scriptTagStr = "var s = document.createElement(\"script\");\n    s.type = \"text/javascript\";\n    s.src = \"".concat(sdkURL, "\";");
   if (loadType === "async") {
     scriptTagStr += "s.async = true;";
   } else if (loadType === "defer") {
@@ -40,7 +39,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
   }
   scriptTagStr += "document.head.appendChild(s);";
   var snippet = "rudderanalytics=window.rudderanalytics=[];for(var methods=[\"load\",\"page\",\"track\",\"identify\",\"alias\",\"group\",\"ready\",\"reset\",\"getAnonymousId\",\"setAnonymousId\"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}\n  ".concat(scriptTagStr, "\n");
-  var instantLoader = "".concat(snippet).concat(delayLoad || manualLoad ? "" : "rudderanalytics.load(".concat(loadConfig, ")"), ";");
+  var instantLoader = "".concat(snippet).concat(manualLoad ? "" : "rudderanalytics.load(".concat(loadConfig, ")"), ";");
   var delayedLoader = "\n      window.rudderSnippetLoaded = false;\n      window.rudderSnippetLoading = false;\n      window.rudderSnippetLoadedCallback = undefined;\n      window.rudderSnippetLoader = function (callback) {\n        if (!window.rudderSnippetLoaded && !window.rudderSnippetLoading) {\n          window.rudderSnippetLoading = true;\n          function loader() {\n            ".concat(snippet, "\n            window.rudderanalytics.load(").concat(loadConfig, ");\n            window.rudderSnippetLoading = false;\n            window.rudderSnippetLoaded = true;\n            if (callback) { callback(); }\n            if (window.rudderSnippetLoadedCallback) {\n              window.rudderSnippetLoadedCallback();\n              window.rudderSnippetLoadedCallback = undefined;\n            }\n          };\n\n          \"requestIdleCallback\" in window\n            ? requestIdleCallback(function () { loader(); })\n            : loader();\n        }\n      }\n      window.addEventListener('scroll',function () {window.rudderSnippetLoader()}, { once: true });\n      setTimeout(\n        function () {\n          \"requestIdleCallback\" in window\n            ? requestIdleCallback(function () { window.rudderSnippetLoader(); })\n            : window.rudderSnippetLoader();\n        },\n        ").concat(delayLoadTime, " || 1000\n      );\n      ");
 
   var snippetToUse = "".concat(delayLoad && !manualLoad ? delayedLoader : instantLoader);
