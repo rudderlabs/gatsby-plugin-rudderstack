@@ -56,6 +56,10 @@ plugins: [
       // track the page change, to implement this, make sure your `trackPage` property is set to `true`
       trackPageDelay: 50,
 
+      // If you are hosting Ruudderstack's JS SDK on your domain, you can pass the Url like below
+      // By default plugin will use the latest JS SDK: https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js
+      sdkURL: `https://sampledomain.com/rudder-analytics.min.js`
+
       // If you need to proxy events through a custom data plane,
       // add a `dataPlaneUrl` property (defaults to https://hosted.rudderlabs.com )
       // RudderStack docs:
@@ -67,7 +71,7 @@ plugins: [
       //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#3-1-1-self-hosted-control-plane
       controlPlaneUrl: `https://override-control-plane-url`,
 
-      // boolean (defaults to false); whether to delay load RudderStack
+      // boolean (defaults to false); whether to delay loading(Download SDK and call load API) of RudderStack JS SDK.
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
       // This feature will force RudderStack to load _after_ either a page routing change
       // or user scroll, or after `delayLoadTime` elapses, whichever comes first. This feature is used to help improve your website's
@@ -103,6 +107,7 @@ plugins: [
 
       // Options to the `load` API
       // Note: The above `controlPlaneUrl` overrides the `configUrl` field in this object
+      // Here you can find all the loadOptions available for JS SDK - https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/load-js-sdk/#loading-options
       loadOptions: {
         ...
       }
