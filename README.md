@@ -56,14 +56,16 @@ plugins: [
       // track the page change, to implement this, make sure your `trackPage` property is set to `true`
       trackPageDelay: 50,
 
-      // If you are hosting Ruudderstack's JS SDK on your domain, you can pass the Url like below
+      // Can be used to override the location of the JavaScript library. This is useful
+      // if you want to add a proxy between the location and the RudderStack source so ad-blockers won't block  
+      // fetching the JavaScript sdk.
       // By default plugin will use the latest JS SDK: https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js
-      sdkURL: `https://sampledomain.com/rudder-analytics.min.js`
+      sdkURL: `https://subdomain.yourdomain.com/v1.1/rudder-analytics.min.js`
 
       // If you need to proxy events through a custom data plane,
       // add a `dataPlaneUrl` property (defaults to https://hosted.rudderlabs.com )
       // RudderStack docs:
-      //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#3-1-load
+      //   - https://www.rudderstack.com/docs/dashboard-guides/overview/#data-plane-url
       dataPlaneUrl: `https://override-rudderstack-endpoint`,
 
       // Add a `controlPlaneUrl` property if you are self-hosting the Control Plane
