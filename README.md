@@ -109,7 +109,7 @@ plugins: [
 
       // Options to the `load` API
       // Note: The above `controlPlaneUrl` overrides the `configUrl` field in this object
-      // Here you can find all the loadOptions available for JS SDK - 
+      // You can find all the available load options here,
       // https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/load-js-sdk/#loading-options
       loadOptions: {
         ...
