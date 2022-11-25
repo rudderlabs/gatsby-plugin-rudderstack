@@ -58,24 +58,24 @@ plugins: [
 
       // If you need to proxy events through a custom data plane,
       // add a `dataPlaneUrl` property (defaults to https://hosted.rudderlabs.com )
-      // Rudderstack docs:
+      // RudderStack docs:
       //   - https://rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/#31-load
       dataPlaneUrl: `https://override-rudderstack-endpoint`,
 
       // Add a `controlPlaneUrl` property if you are self-hosting the Control Plane
-      // Rudderstack docs:
+      // RudderStack docs:
       //   - https://rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/#311-self-hosted-control-plane
       controlPlaneUrl: `https://override-control-plane-url`,
 
       // boolean (defaults to false); whether to delay loading (add SDK script and load the SDK) of RudderStack JS SDK.
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
-      // This feature will force Rudderstack to load _after_ either a page routing change
+      // This feature will force RudderStack to load _after_ either a page routing change
       // or user scroll, whichever comes first. This delay time is controlled by
       // `delayLoadTime` setting. This feature is used to help improve your website's
       // TTI (for SEO, UX, etc).  See links below for more info.
       // NOTE: But if you are using server-side routing and enable this feature,
-      // Rudderstack will never load (because although client-side routing does not do
-      // a full page refresh, server-side routing does, thereby preventing Rudderstack
+      // RudderStack will never load (because although client-side routing does not do
+      // a full page refresh, server-side routing does, thereby preventing RudderStack
       // from ever loading).
       // See here for more context:
       // GIF: https://github.com/benjaminhoffman/gatsby-plugin-segment/pull/19#issuecomment-559569483
