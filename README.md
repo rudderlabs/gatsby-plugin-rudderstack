@@ -95,10 +95,9 @@ plugins: [
       // *Another use case is if you want to add callbacks to the methods at load time.
       manualLoad: false,
 
-      // Can be used to override the location of the JavaScript library. This is useful
-      // if you want to add a proxy between the location and the RudderStack source so ad-blockers won't block  
-      // fetching the JavaScript sdk.
-      // By default plugin will use the latest JS SDK: https://cdn.rudderlabs.com/v1.1/rudder-analytics.min.js
+      // Can be used to override where the SDK should be loaded from. This is useful
+      // if you want to serve the SDK from a custom domain other than RudderStack to tackle ad-blockers
+      // By default, the plugin will use the latest JS SDK from RudderStack's CDN
       sdkURL: `https://subdomain.yourdomain.com/v1.1/rudder-analytics.min.js`,
 
       // string ('async' or 'defer'); whether to load the RudderStack SDK async or defer. Anything else
