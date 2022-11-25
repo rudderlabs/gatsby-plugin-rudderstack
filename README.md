@@ -67,7 +67,7 @@ plugins: [
       //   - https://rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/#311-self-hosted-control-plane
       controlPlaneUrl: `https://override-control-plane-url`,
 
-      // boolean (defaults to false); whether to delay loading(Download SDK and call load API) of RudderStack JS SDK.
+      // boolean (defaults to false); whether to delay loading (add SDK script and load the SDK) of RudderStack JS SDK.
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
       // This feature will force Rudderstack to load _after_ either a page routing change
       // or user scroll, whichever comes first. This delay time is controlled by
