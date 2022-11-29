@@ -40,7 +40,7 @@ plugins: [
       // required; non-empty string
       //NOTE: Do not commit this to git. Process from env.
       prodKey: `RUDDERSTACK_PRODUCTION_WRITE_KEY`,
-
+      
       // if you have a development env for your rudderstack account, paste that key here
       // when process.env.NODE_ENV === 'development'
       // optional; non-empty string
@@ -59,18 +59,19 @@ plugins: [
       // If you need to proxy events through a custom data plane,
       // add a `dataPlaneUrl` property (defaults to https://hosted.rudderlabs.com )
       // RudderStack docs:
-      //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#3-1-load
+      //   - https://rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/#31-load
       dataPlaneUrl: `https://override-rudderstack-endpoint`,
 
       // Add a `controlPlaneUrl` property if you are self-hosting the Control Plane
       // RudderStack docs:
-      //   - https://docs.rudderstack.com/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#3-1-1-self-hosted-control-plane
+      //   - https://rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/#311-self-hosted-control-plane
       controlPlaneUrl: `https://override-control-plane-url`,
 
-      // boolean (defaults to false); whether to delay load RudderStack
+      // boolean (defaults to false); whether to delay loading (add SDK script and load the SDK) of RudderStack JS SDK.
       // ADVANCED FEATURE: only use if you leverage client-side routing (ie, Gatsby <Link>)
       // This feature will force RudderStack to load _after_ either a page routing change
-      // or user scroll, or after `delayLoadTime` elapses, whichever comes first. This feature is used to help improve your website's
+      // or user scroll, whichever comes first. This delay time is controlled by
+      // `delayLoadTime` setting. This feature is used to help improve your website's
       // TTI (for SEO, UX, etc).  See links below for more info.
       // NOTE: But if you are using server-side routing and enable this feature,
       // RudderStack will never load (because although client-side routing does not do
@@ -82,8 +83,7 @@ plugins: [
       // Problem/solution: https://marketingexamples.com/seo/performance
       delayLoad: false,
 
-      // number (default to 1000); time to wait after the page loads
-      // to load the RudderStack SDK
+      // number (default to 1000); time to wait after scroll or route change
       // To be used when `delayLoad` is set to `true`
       delayLoadTime: 1000,
 
@@ -95,6 +95,11 @@ plugins: [
       // *Another use case is if you want to add callbacks to the methods at load time.
       manualLoad: false,
 
+      // Can be used to override where the SDK should be loaded from. This is useful
+      // if you want to serve the SDK from a custom domain other than RudderStack to tackle ad-blockers
+      // By default, the plugin will use the latest JS SDK from RudderStack's CDN
+      sdkURL: `https://subdomain.yourdomain.com/v1.1/rudder-analytics.min.js`,
+
       // string ('async' or 'defer'); whether to load the RudderStack SDK async or defer. Anything else
       // will load normally.
       // 'async' will load the SDK as <script async></script>
@@ -103,6 +108,8 @@ plugins: [
 
       // Options to the `load` API
       // Note: The above `controlPlaneUrl` overrides the `configUrl` field in this object
+      // You can find all the available load options here,
+      // https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/load-js-sdk/#loading-options
       loadOptions: {
         ...
       }
