@@ -33,10 +33,10 @@ jobs:
           npm run test
           npm run check:lint:ci
 
-      - name: Fix filesystem paths in generated reports
-        run: |
-          sed -i 's+home/runner/work/gatsby-plugin-rudderstack/gatsby-plugin-rudderstack+/github/workspace+g' reports/coverage/lcov.info
-          sed -i 's+/home/runner/work/gatsby-plugin-rudderstack/gatsby-plugin-rudderstack+/github/workspace+g' reports/eslint.json
+      # - name: Fix filesystem paths in generated reports
+      #   run: |
+      #     sed -i 's+home/runner/work/gatsby-plugin-rudderstack/gatsby-plugin-rudderstack+/github/workspace+g' reports/coverage/lcov.info
+      #     sed -i 's+/home/runner/work/gatsby-plugin-rudderstack/gatsby-plugin-rudderstack+/github/workspace+g' reports/eslint.json
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
