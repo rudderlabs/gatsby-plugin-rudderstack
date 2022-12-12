@@ -30,7 +30,7 @@ jobs:
           HUSKY: 0
         run: |
           npm ci
-          npm run test
+          npm run test:ci
           npm run check:lint:ci
 
       # - name: Fix filesystem paths in generated reports

@@ -19,6 +19,7 @@
     "commit-msg": "commitlint --edit",
     "commit": "git-cz",
     "test": "exit 0",
+    "test:ci": "exit 0",
     "copy:files": "cp CHANGELOG.md dist/ && cp LICENSE.md dist/ && cp package.json dist/ && cp gatsby-node.js dist/ && cp README.md dist/"
   },
   "repository": {
