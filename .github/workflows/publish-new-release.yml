@@ -3,7 +3,7 @@ name: Publish new github release
 on:
   pull_request:
     branches:
-      - production
+      - main
     types:
       - closed
 
@@ -37,18 +37,18 @@ jobs:
         id: create_release
         env:
           HUSKY: 0
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx conventional-github-releaser -p angular
 
       - name: Create pull request into staging
         uses: repo-sync/pull-request@v2
         with:
-          source_branch: 'production'
-          destination_branch: 'production-staging'
+          source_branch: 'main'
+          destination_branch: 'deevelop'
           github_token: ${{ secrets.PAT }}
-          pr_title: 'chore(release): pulling production into production-staging post release v${{ steps.extract-version.outputs.release_version }}'
+          pr_title: 'chore(release): pulling main into deevelop post release v${{ steps.extract-version.outputs.release_version }}'
           pr_body: ':crown: *An automated PR*'
           pr_reviewer: 'bardisg'
 
@@ -67,3 +67,34 @@ jobs:
           branches: 'release/*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send message to Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          PROJECT_NAME: 'Gatsby Rudderstack Plugin'
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "New release: ${{ env.PROJECT_NAME }}"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Release: <${{ github.event.release.html_url }}|${{ github.event.release.tag_name }}>*\n${{ github.event.release.created_at }}"
+                  }
+                }
+              ]
+            }
