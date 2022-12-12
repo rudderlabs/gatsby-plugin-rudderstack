@@ -1,0 +1,6 @@
+node_modules/
+reports/
+stats/
+CHANGELOG.md
+CONTRIBUTING.md
+dist/

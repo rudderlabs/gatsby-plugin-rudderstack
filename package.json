@@ -4,8 +4,22 @@
   "description": "Event tracking with RudderStack in your Gatsby frontend.",
   "main": "gatsby-ssr.js",
   "scripts": {
-    "build": "babel src --out-dir . --ignore __tests__",
-    "watch": "babel -w src --out-dir . --ignore __tests__"
+    "build": "babel src --out-dir ./dist --ignore __tests__ && npm run copy:files",
+    "watch": "babel -w src --out-dir ./dist --ignore __tests__",
+    "clean": "rm -rf dist",
+    "check:lint": "eslint \"src/**/*.js\"",
+    "check:lint:ci": "eslint \"src/**/*.js\" -f json -o reports/eslint.json || exit 0",
+    "check:circular": "madge --circular --extensions js ./src || exit 0",
+    "check:duplicates": "jscpd src --threshold 5",
+    "check:security": "npm audit --recursive --audit-level=high",
+    "format": "prettier --write .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky install",
+    "pre-commit": "npm run test && npx lint-staged",
+    "commit-msg": "commitlint --edit",
+    "commit": "git-cz",
+    "test": "exit 0",
+    "copy:files": "cp CHANGELOG.md dist/ && cp LICENSE.md dist/ && cp package.json dist/ && cp gatsby-node.js dist/ && cp README.md dist/"
   },
   "repository": {
     "type": "git",
@@ -19,7 +33,7 @@
     "gatsby-plugin"
   ],
   "author": "RudderStack",
-  "license": "AGPL-3.0-only",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rudderlabs/gatsby-plugin-rudderstack/issues"
   },
@@ -27,13 +41,57 @@
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.2",
+    "@babel/eslint-parser": "7.19.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6"
+    "@babel/preset-react": "^7.18.6",
+    "commitizen": "4.2.5",
+    "commitlint": "17.3.0",
+    "conventional-changelog-cli": "2.2.2",
+    "conventional-github-releaser": "3.1.5",
+    "@commitlint/config-conventional": "17.3.0",
+    "@digitalroute/cz-conventional-changelog-for-jira": "7.4.2",
+    "eslint": "8.28.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-compat": "4.0.2",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-sonarjs": "0.16.0",
+    "eslint-plugin-unicorn": "45.0.0",
+    "husky": "8.0.2",
+    "jscpd": "3.5.1",
+    "lint-staged": "13.0.4",
+    "madge": "5.0.1",
+    "prettier": "2.8.0",
+    "standard-version": "9.5.0"
   },
   "eslintConfig": {
     "rules": {
       "strict": "off"
     }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{json,js,md,ts}": "prettier --write"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@digitalroute/cz-conventional-changelog-for-jira",
+      "jiraMode": false,
+      "jiraOptional": true,
+      "skipScope": true,
+      "defaultType": "feat"
+    }
+  },
+  "overrides": {
+    "dot-prop": "5.3.0",
+    "semver-regex": "3.1.4",
+    "trim-newlines": "3.0.1"
+  },
+  "resolutions": {
+    "dot-prop": "5.3.0",
+    "semver-regex": "3.1.4",
+    "trim-newlines": "3.0.1"
   }
 }
