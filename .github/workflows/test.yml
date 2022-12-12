@@ -31,7 +31,7 @@ jobs:
         run: |
           npm ci
           npm run test
-          npm run check:lint
+          npm run check:lint:ci
 
       - name: Fix filesystem paths in generated reports
         run: |
