@@ -40,15 +40,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git tag -a v${{ steps.extract-version.outputs.release_version }} -m "chore: release v${{ steps.extract-version.outputs.release_version }}"
+          git push origin refs/tags/v${{ steps.extract-version.outputs.release_version }}
           npx conventional-github-releaser -p angular
 
       - name: Create pull request into staging
         uses: repo-sync/pull-request@v2
         with:
           source_branch: 'main'
-          destination_branch: 'deevelop'
+          destination_branch: 'develop'
           github_token: ${{ secrets.PAT }}
-          pr_title: 'chore(release): pulling main into deevelop post release v${{ steps.extract-version.outputs.release_version }}'
+          pr_title: 'chore(release): pulling main into develop post release v${{ steps.extract-version.outputs.release_version }}'
           pr_body: ':crown: *An automated PR*'
           pr_reviewer: 'bardisg'
 
