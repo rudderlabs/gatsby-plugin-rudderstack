@@ -1,10 +1,6 @@
 name: Publish new github release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        required: true
   pull_request:
     branches:
       - main
@@ -15,7 +11,7 @@ jobs:
   release:
     name: Publish new release
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/heads/main') || ((startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix-release/')) && github.event.pull_request.merged == true) # only merged pull requests must trigger this job
+    if: (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix-release/')) && github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
       - name: Extract version from branch name (for release branches)
         id: extract-version
@@ -24,7 +20,7 @@ jobs:
           VERSION=${BRANCH_NAME#hotfix-}
           VERSION=${VERSION#release/}
 
-          echo "release_version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -54,6 +50,7 @@ jobs:
           git tag -a v${{ steps.extract-version.outputs.release_version }} -m "chore: release v${{ steps.extract-version.outputs.release_version }}"
           git push origin refs/tags/v${{ steps.extract-version.outputs.release_version }}
           npx conventional-github-releaser -p angular
+          echo "DATE=$(date)" >> $GITHUB_ENV
 
       - name: Create pull request into staging
         uses: repo-sync/pull-request@v2
@@ -87,6 +84,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           PROJECT_NAME: 'Gatsby Rudderstack Plugin'
+          RELEASES_URL: 'https://github.com/rudderlabs/gatsby-plugin-rudderstack/releases/'
         with:
           channel-id: ${{ secrets.SLACK_RELEASE_CHANNEL_ID }}
           payload: |
@@ -106,7 +104,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Release: <${{ github.event.release.html_url }}|${{ github.event.release.tag_name }}>*\n${{ github.event.release.created_at }}"
+                    "text": "*Release: <${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}"
                   }
                 }
               ]
