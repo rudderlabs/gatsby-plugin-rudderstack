@@ -1,0 +1,8 @@
+.husky/
+dist/
+node_modules/
+reports/
+stats/
+*.json
+*.md
+*.d.ts
