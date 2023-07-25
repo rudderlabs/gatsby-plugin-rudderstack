@@ -10,7 +10,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     delayLoadTime,
     manualLoad,
     loadType,
-    sdkURL = "https://cdn.rudderlabs.com/beta/3.0.0-beta",
+    sdkURL = "https://cdn.rudderlabs.com/beta/3.0.0-beta/rudder-analytics.min.js",
     loadOptions = {},
     useLegacySDK,
   } = pluginOptions;
