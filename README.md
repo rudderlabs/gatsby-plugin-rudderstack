@@ -1,7 +1,21 @@
-<p align="center"><a href="https://rudderstack.com"><img src="https://user-images.githubusercontent.com/59817155/121357083-1c571300-c94f-11eb-8cc7-ce6df13855c9.png" alt="RudderStack - An Open Source Customer Data Platform" height="90"/></a></p>
-<h1 align="center">gatsby-plugin-rudderstack</h1>
-<p align="center"><b>The warehouse-first customer data platform built for devs.</b></p>
-<br/>
+## [![Releases](https://img.shields.io/github/release/rudderlabs/gatsby-plugin-rudderstack.svg)](https://github.com/rudderlabs/gatsby-plugin-rudderstack/releases) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rudderlabs_gatsby-plugin-rudderstack&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rudderlabs_gatsby-plugin-rudderstack) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=rudderlabs_gatsby-plugin-rudderstack&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=rudderlabs_gatsby-plugin-rudderstack) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=rudderlabs_gatsby-plugin-rudderstack&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=rudderlabs_gatsby-plugin-rudderstack) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=rudderlabs_gatsby-plugin-rudderstack&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=rudderlabs_gatsby-plugin-rudderstack) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rudderlabs_gatsby-plugin-rudderstack&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rudderlabs_gatsby-plugin-rudderstack)
+
+<p align="center">
+  <a href="https://rudderstack.com/">
+    <img alt="RudderStack" width="512" src="https://raw.githubusercontent.com/rudderlabs/rudder-sdk-js/develop/assets/rs-logo-full-light.jpg">
+  </a>
+  <br />
+  <caption>The Customer Data Platform for Developers</caption>
+</p>
+<p align="center">
+  <b>
+    <a href="https://rudderstack.com">Website</a>
+    ·
+    <a href="https://rudderstack.com/docs/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk/">Documentation</a>
+    ·
+    <a href="https://rudderstack.com/join-rudderstack-slack-community">Community Slack</a>
+  </b>
+</p>
 
 # The RudderStack Plugin for Gatsby.
 
@@ -9,11 +23,11 @@ This is a way for you to quickly and easily get RudderStack up and running in yo
 
 Questions? Please join our [Slack channel](https://resources.rudderstack.com/join-rudderstack-slack) or read about us on [Product Hunt](https://www.producthunt.com/posts/rudderstack).
 
-# Why Use This plugin
+## Why Use This plugin
 
 This plugin makes it easy to integrate your Gatsby website with the RudderStack API and easily track events.
 
-# Key Features
+## Key Features
 
 - use multiple write keys (one for prod env, another optional one for dev)
 - disable page view tracking (just in case you want to add it later manually)
@@ -24,9 +38,9 @@ This plugin makes it easy to integrate your Gatsby website with the RudderStack 
 - NPM: `$ npm install --save gatsby-plugin-rudderstack`
 - YARN: `$ yarn add gatsby-plugin-rudderstack`
 
-# [](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#setup) Setup
+## [Setup](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#setup)
 
-## [](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#step-1-configure-gatsby) Step 1: Configure Your Gatsby Config File
+### [Step 1: Configure Your Gatsby Config File](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#step-1-configure-gatsby)
 
 In your gatsby-config.js file:
 
@@ -40,7 +54,7 @@ plugins: [
       // required; non-empty string
       //NOTE: Do not commit this to git. Process from env.
       prodKey: `RUDDERSTACK_PRODUCTION_WRITE_KEY`,
-      
+
       // if you have a development env for your rudderstack account, paste that key here
       // when process.env.NODE_ENV === 'development'
       // optional; non-empty string
@@ -98,13 +112,17 @@ plugins: [
       // Can be used to override where the SDK should be loaded from. This is useful
       // if you want to serve the SDK from a custom domain other than RudderStack to tackle ad-blockers
       // By default, the plugin will use the latest JS SDK from RudderStack's CDN
-      sdkURL: `https://subdomain.yourdomain.com/v1.1/rudder-analytics.min.js`,
+      sdkURL: `https://subdomain.yourdomain.com/v3`,
 
       // string ('async' or 'defer'); whether to load the RudderStack SDK async or defer. Anything else
       // will load normally.
       // 'async' will load the SDK as <script async></script>
       // 'defer' will load the SDK as <script defer></script>
       loadType: 'default',
+
+      // Whether to use the snippet for JS SDK v2.x
+      // Useful for only loading the previous major version of the SDK if you do not want to migrate to v3 yet.
+      useLegacySDK: false,
 
       // Options to the `load` API
       // Note: The above `controlPlaneUrl` overrides the `configUrl` field in this object
@@ -118,7 +136,7 @@ plugins: [
 ];
 ```
 
-## [](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#step-2-identify-your-users-using-the-identify-method)Step 2: Identify Your Users With the `identify()` Method:
+### [Step 2: Identify Your Users With the `identify()` Method:](https://github.com/rudderlabs/gatsby-plugin-rudderstack/blob/master/README.md#step-2-identify-your-users-using-the-identify-method)
 
 The `identify()` method allows you to link users and their actions to a specific userid.
 
@@ -126,26 +144,31 @@ A sample example of how the `identify()` method works in Gatsby is as shown:
 
 ```javascript
 class CallToAction extends React.Component {
-    _handleCallToAction() {
-        window.rudderanalytics.identify(
-          "12345", {
-            email: "name@domain.com"
-          }, {
-            page: {
-              path: "/post",
-              referrer: "internal",
-              search: "",
-              title: "Post Page",
-              url: "",
-            },
-          }
-        }
+  _handleCallToAction() {
+    window.rudderanalytics.identify(
+      '12345',
+      {
+        email: 'name@domain.com',
+      },
+      {
+        page: {
+          path: '/post',
+          referrer: 'internal',
+          search: '',
+          title: 'Post Page',
+          url: '',
+        },
+      },
+    );
+  }
 
-        render() {
-            return (
-                <Link onClick={ this._handleCallToAction } to="/write-post">Write a Post</Link>
-              )
-        }
+  render() {
+    return (
+      <Link onClick={this._handleCallToAction} to="/write-post">
+        Write a Post
+      </Link>
+    );
+  }
 }
 ```
 
@@ -153,7 +176,7 @@ In the above example, information such as the user ID, email along with contextu
 
 > **NOTE**: There is no need to call `identify()` for anonymous visitors to your website. Such visitors are automatically assigned an `anonymousId`.
 
-## [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-3-track-your-users-actions-using-the-track-method)Step 3: Track Your Users’ Actions With the `track()` Method
+### [Step 3: Track Your Users’ Actions With the `track()` Method](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-3-track-your-users-actions-using-the-track-method)
 
 The `track()` method allows you to track any actions that your users might perform.
 
@@ -161,15 +184,15 @@ A sample example of how the `track()` method works is as shown:
 
 ```javascript
 window.rudderanalytics.track(
-  "test track event GA3",
+  'test track event GA3',
   {
     revenue: 30,
-    currency: "USD",
+    currency: 'USD',
     user_actual_id: 12345,
   },
   () => {
-    console.log("in track call");
-  }
+    console.log('in track call');
+  },
 );
 ```
 
@@ -181,19 +204,19 @@ You can use this method to track various other success metrics for your website,
 
 ```javascript
 window.rudderanalytics.track(
-  "test track event GA3",
+  'test track event GA3',
   {
     revenue: 30,
-    currency: "USD",
+    currency: 'USD',
     user_actual_id: 12345,
   },
   () => {
-    console.log("in track call");
-  }
+    console.log('in track call');
+  },
 );
 ```
 
-### Track Pageviews
+#### Track Pageviews
 
 **If you want to track pageviews automatically,** set `trackPage` to `true` in your `gatsby-config.js` file. What we mean by _"automatically"_ is that whenever there is a route change, we leverage Gatsby's `onRouteUpdate` API in the `gatsby-browser.js` file ([link](https://www.gatsbyjs.org/docs/browser-apis/#onRouteUpdate)) to invoke `window.rudderanalytics.page()` on each route change. But if you want to pass in properties along with the pageview call (ie, it's common to see folks pass in some user or account data with each page call), then you'll have to set `trackPage: false` and call it yourself in your `gatsby-browser.js` file, like this:
 
@@ -208,7 +231,7 @@ Note: The above code snippet might not give the best results all the time as it 
 
 You’ve now successfully installed `rudder-analytics.js` tracking. You can enable and use any event destination to send your event data via RudderStack, in no time at all!
 
-## [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-4-check-ready-state)Step 4: Check Ready State
+### [Step 4: Check Ready State](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#step-4-check-ready-state)
 
 **There are cases when you may want to tap into the features provide by end destination SDKs to enhance tracking and other functionalities.** RudderStack's JavaScript SDK exposes a `ready` API with a `callback` parameter, that fires when the SDK is done initializing itself and other third-party native SDK destinations.
 
@@ -216,29 +239,29 @@ For example:
 
 ```javascript
 window.rudderanalytics.ready(() => {
-  console.log("we are all set!!!");
+  console.log('we are all set!!!');
 });
 ```
 
 | **For detailed technical documentation and troubleshooting guide on the RudderStack’s JavaScript SDK, check out our [docs](https://docs.rudderlabs.com/sdk-integration-guide/getting-started-with-javascript-sdk).** |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-# [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#querystring-api)Querystring API
+## [Querystring API](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#querystring-api)
 
 RudderStack's Querystring API allows you to trigger `track`, `identify` calls using query parameters. If you pass the following parameters in the URL, then it will trigger the corresponding SDK API call.
 
 For example:
 
 ```html
-http://hostname.com/?ajs_uid=12345&ajs_event=test%20event&ajs_aid=abcde&ajs_prop_testProp=prop1&ajs_trait_name=Firstname+Lastname
+https://hostname.com/?ajs_uid=12345&ajs_event=test%20event&ajs_aid=abcde&ajs_prop_testProp=prop1&ajs_trait_name=Firstname+Lastname
 ```
 
 For the above URL, the below SDK calls will be triggered:
 
 ```javascript
-rudderanalytics.identify("12345", { name: "Firstname Lastname" });
-rudderanalytics.track("test event", { testProp: "prop1" });
-rudderanalytics.setAnonymousId("abcde");
+rudderanalytics.identify('12345', { name: 'Firstname Lastname' });
+rudderanalytics.track('test event', { testProp: 'prop1' });
+rudderanalytics.setAnonymousId('abcde');
 ```
 
 You may use the below parameters as querystring parameter and trigger the corresponding call.
@@ -253,7 +276,7 @@ You may use the below parameters as querystring parameter and trigger the corres
 
 `ajs_trait_<trait>` : If `ajs_uid` is provided as querysting, value of this parameter will populate the `traits` of the `identify` call made.
 
-# [](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#adding-callbacks-to-standard-methods)Adding Callbacks to Standard Methods
+# [Adding Callbacks to Standard Methods](https://github.com/rudderlabs/rudder-sdk-js/blob/master/README.md#adding-callbacks-to-standard-methods)
 
 You can also define callbacks to the common methods of the `rudderanalytics` object.
 
@@ -264,9 +287,9 @@ For example, you can load the rudderanalytics with callbacks in your Gatsby brow
 ```javascript
 window.rudderanalytics.syncPixelCallback = (obj) => {
   window.rudderanalytics.track(
-    "sync lotame",
+    'sync lotame',
     { destination: obj.destination },
-    { integrations: { All: false, S3: true } }
+    { integrations: { All: false, S3: true } },
   );
 };
 ```
@@ -282,21 +305,21 @@ The callback can be supplied in options parameter like below as well:
 rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL, {
   clientSuppliedCallbacks: {
     syncPixelCallback: () => {
-      console.log("sync done!");
+      console.log('sync done!');
     },
   },
 });
 ```
 
-# License
+## License
 
 RudderStack **gatsby-plugin-rudderstack** is released under the [AGPLv3 License][agplv3_license].
 
-# Contribute
+## Contribute
 
 We would love to see you contribute to RudderStack. Get more information on how to contribute [here](CONTRIBUTING.md).
 
-# Follow Us
+## Follow Us
 
 - [RudderStack Blog][rudderstack-blog]
 - [Slack][slack]
@@ -308,10 +331,10 @@ We would love to see you contribute to RudderStack. Get more information on how 
 - [HackerNews][hackernews]
 - [Product Hunt][producthunt]
 
-# :clap: Our Supporters
+## :clap: Our Supporters
 
-[![Stargazers repo roster for @rudderlabs/rudder-server](https://reporoster.com/stars/rudderlabs/gatsby-plugin-rudderstack)](https://github.com/rudderlabs/gatsby-plugin-rudderstack/stargazers)
-[![Forkers repo roster for @rudderlabs/rudder-server](https://reporoster.com/forks/rudderlabs/gatsby-plugin-rudderstack)](https://github.com/rudderlabs/gatsby-plugin-rudderstack/network/members)
+[![Stargazers repo roster for @rudderlabs/gatsby-plugin-rudderstack](https://reporoster.com/stars/rudderlabs/gatsby-plugin-rudderstack)](https://github.com/rudderlabs/gatsby-plugin-rudderstack/stargazers)
+[![Forkers repo roster for @rudderlabs/gatsby-plugin-rudderstack](https://reporoster.com/forks/rudderlabs/gatsby-plugin-rudderstack)](https://github.com/rudderlabs/gatsby-plugin-rudderstack/network/members)
 
 <!----variables---->
 
