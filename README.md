@@ -120,10 +120,6 @@ plugins: [
       // 'defer' will load the SDK as <script defer></script>
       loadType: 'default',
 
-      // Whether to use the snippet for JS SDK v2.x
-      // Useful for only loading the previous major version of the SDK if you do not want to migrate to v3 yet.
-      useLegacySDK: false,
-
       // Options to the `load` API
       // Note: The above `controlPlaneUrl` overrides the `configUrl` field in this object
       // You can find all the available load options here,
