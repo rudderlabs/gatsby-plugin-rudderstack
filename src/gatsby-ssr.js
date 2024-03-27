@@ -31,7 +31,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
   const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(finalLoadOptions)}`;
 
-  let snippet = `!function(){"use strict";window.RudderSnippetVersion="3.0.3";var sdkBaseUrl=${sdkURL};var sdkName="rsa.min.js";var asyncScript=${loadType === 'async'};var deferScript=${loadType === 'defer'};window.rudderAnalyticsBuildType="legacy",window.rudderanalytics=[]
+  const snippet = `!function(){"use strict";window.RudderSnippetVersion="3.0.3";var sdkBaseUrl=${sdkURL};var sdkName="rsa.min.js";var asyncScript=${loadType === 'async'};var deferScript=${loadType === 'defer'};window.rudderAnalyticsBuildType="legacy",window.rudderanalytics=[]
   ;var e=["setDefaultInstanceKey","load","ready","page","track","identify","alias","group","reset","setAnonymousId","startSession","endSession","consent"]
   ;for(var n=0;n<e.length;n++){var t=e[n];window.rudderanalytics[t]=function(e){return function(){
   window.rudderanalytics.push([e].concat(Array.prototype.slice.call(arguments)))}}(t)}try{
