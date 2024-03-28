@@ -9,8 +9,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
     manualLoad,
     loadType,
     sdkURL = 'https://cdn.rudderlabs.com/v3',
-    loadOptions = {},
-    useLegacySDK,
+    loadOptions = {}
   } = pluginOptions;
 
   // ensures RudderStack production write key is present
@@ -32,29 +31,20 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
   const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(finalLoadOptions)}`;
 
-  let snippet = `window.RudderSnippetVersion="3.0.0-beta.14";var sdkBaseUrl="${sdkURL}";var sdkName="rsa.min.js";var asyncScript=true;window.rudderAnalyticsBuildType="legacy",window.rudderanalytics=[];
-  var e=["setDefaultInstanceKey","load","ready","page","track","identify","alias","group","reset","setAnonymousId","startSession","endSession","consent"];
-  for(var n=0;n<e.length;n++){var t=e[n];window.rudderanalytics[t]=function(e){return function(){window.rudderanalytics.push([e].concat(Array.prototype.slice.call(arguments)))}}(t)}
-  try{new Function('return import("")'),window.rudderAnalyticsBuildType="modern"}catch(a){}
-  if(window.rudderAnalyticsMount=function(){"undefined"==typeof globalThis&&(Object.defineProperty(Object.prototype,"__globalThis_magic__",{get:function get(){return this},configurable:true}),__globalThis_magic__.globalThis=__globalThis_magic__,delete Object.prototype.__globalThis_magic__);
-  var e=document.createElement("script");e.src="".concat(sdkBaseUrl,"/").concat(window.rudderAnalyticsBuildType,"/").concat(sdkName),e.async=asyncScript,document.head?document.head.appendChild(e):document.body.appendChild(e)},"undefined"==typeof Promise||"undefined"==typeof globalThis){
-  var d=document.createElement("script");d.src="https://polyfill.io/v3/polyfill.min.js?features=Symbol%2CPromise&callback=rudderAnalyticsMount",d.async=asyncScript,document.head?document.head.appendChild(d):document.body.appendChild(d)}else{window.rudderAnalyticsMount()}
-  `;
-
-  if (useLegacySDK) {
-    let scriptTagStr = `var s = document.createElement("script");
-      s.type = "text/javascript";
-      s.src = "${sdkURL}";`;
-    if (loadType === 'async') {
-      scriptTagStr += 's.async = true;';
-    } else if (loadType === 'defer') {
-      scriptTagStr += 's.defer = true;';
-    }
-    scriptTagStr += 'document.head.appendChild(s);';
-
-    snippet = `rudderanalytics=window.rudderanalytics=[];for(var methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],i=0;i<methods.length;i++){var method=methods[i];rudderanalytics[method]=function(a){return function(){rudderanalytics.push([a].concat(Array.prototype.slice.call(arguments)))}}(method)}
-    ${scriptTagStr}`;
-  }
+  const snippet = `!function(){"use strict";window.RudderSnippetVersion="3.0.3";var sdkBaseUrl=${sdkURL};var sdkName="rsa.min.js";var asyncScript=${loadType === 'async'};var deferScript=${loadType === 'defer'};window.rudderAnalyticsBuildType="legacy",window.rudderanalytics=[]
+  ;var e=["setDefaultInstanceKey","load","ready","page","track","identify","alias","group","reset","setAnonymousId","startSession","endSession","consent"]
+  ;for(var n=0;n<e.length;n++){var t=e[n];window.rudderanalytics[t]=function(e){return function(){
+  window.rudderanalytics.push([e].concat(Array.prototype.slice.call(arguments)))}}(t)}try{
+  new Function('return import("")'),window.rudderAnalyticsBuildType="modern"}catch(a){}
+  if(window.rudderAnalyticsMount=function(){
+  "undefined"==typeof globalThis&&(Object.defineProperty(Object.prototype,"__globalThis_magic__",{get:function get(){
+  return this},configurable:true}),__globalThis_magic__.globalThis=__globalThis_magic__,
+  delete Object.prototype.__globalThis_magic__);var e=document.createElement("script")
+  ;e.src="".concat(sdkBaseUrl,"/").concat(window.rudderAnalyticsBuildType,"/").concat(sdkName);if(asyncScript){e.async=true};if(deferScript){e.defer=true};document.head?document.head.appendChild(e):document.body.appendChild(e)
+  },"undefined"==typeof Promise||"undefined"==typeof globalThis){var d=document.createElement("script")
+  ;d.src="https://polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=Symbol%2CPromise&callback=rudderAnalyticsMount",
+  d.async=asyncScript,document.head?document.head.appendChild(d):document.body.appendChild(d)}else{
+  window.rudderAnalyticsMount()}}();`;
 
   const instantLoader = `${snippet}${
     manualLoad ? `` : `window.rudderanalytics.load(${loadConfig})`
