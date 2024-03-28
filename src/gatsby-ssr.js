@@ -31,7 +31,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
 
   const loadConfig = `'${writeKey}', '${dataPlaneUrl}', ${JSON.stringify(finalLoadOptions)}`;
 
-  const snippet = `!function(){"use strict";window.RudderSnippetVersion="3.0.3";var sdkBaseUrl=${sdkURL};var sdkName="rsa.min.js";var asyncScript=${loadType === 'async'};var deferScript=${loadType === 'defer'};window.rudderAnalyticsBuildType="legacy",window.rudderanalytics=[]
+  const snippet = `!function(){"use strict";window.RudderSnippetVersion="3.0.3";var sdkBaseUrl="${sdkURL}";var sdkName="rsa.min.js";var asyncScript=${loadType === 'async'};var deferScript=${loadType === 'defer'};window.rudderAnalyticsBuildType="legacy",window.rudderanalytics=[]
   ;var e=["setDefaultInstanceKey","load","ready","page","track","identify","alias","group","reset","setAnonymousId","startSession","endSession","consent"]
   ;for(var n=0;n<e.length;n++){var t=e[n];window.rudderanalytics[t]=function(e){return function(){
   window.rudderanalytics.push([e].concat(Array.prototype.slice.call(arguments)))}}(t)}try{
@@ -40,7 +40,7 @@ exports.onRenderBody = ({ setHeadComponents }, pluginOptions) => {
   "undefined"==typeof globalThis&&(Object.defineProperty(Object.prototype,"__globalThis_magic__",{get:function get(){
   return this},configurable:true}),__globalThis_magic__.globalThis=__globalThis_magic__,
   delete Object.prototype.__globalThis_magic__);var e=document.createElement("script")
-  ;e.src="".concat(sdkBaseUrl,"/").concat(window.rudderAnalyticsBuildType,"/").concat(sdkName);if(asyncScript){e.async=true};if(deferScript){e.defer=true};document.head?document.head.appendChild(e):document.body.appendChild(e)
+  ;e.src="".concat(sdkBaseUrl,"/").concat(window.rudderAnalyticsBuildType,"/").concat(sdkName),asyncScript&&(e.async=true),deferScript&&(e.defer=true),document.head?document.head.appendChild(e):document.body.appendChild(e)
   },"undefined"==typeof Promise||"undefined"==typeof globalThis){var d=document.createElement("script")
   ;d.src="https://polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=Symbol%2CPromise&callback=rudderAnalyticsMount",
   d.async=asyncScript,document.head?document.head.appendChild(d):document.body.appendChild(d)}else{
