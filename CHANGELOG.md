@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/rudderlabs/gatsby-plugin-rudderstack/compare/v4.0.1...v4.0.2) (2024-10-09)
+
+
+### Bug Fixes
+
+* update js sdk loading snippet to latest version ([#35](https://github.com/rudderlabs/gatsby-plugin-rudderstack/issues/35)) ([7aa3d58](https://github.com/rudderlabs/gatsby-plugin-rudderstack/commit/7aa3d586e2d9a569a9609d7025ba6f7c6e3ba266))
+
 ## [4.0.1](https://github.com/rudderlabs/gatsby-plugin-rudderstack/compare/v4.0.0...v4.0.1) (2024-03-29)
 
 ### Bug Fixes
