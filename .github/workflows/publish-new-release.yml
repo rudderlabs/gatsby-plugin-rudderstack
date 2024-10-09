@@ -23,12 +23,12 @@ jobs:
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -58,7 +58,7 @@ jobs:
           source_branch: 'main'
           destination_branch: 'develop'
           github_token: ${{ secrets.PAT }}
-          pr_title: 'chore(release): pulling main into develop post release v${{ steps.extract-version.outputs.release_version }}'
+          pr_title: 'chore(release): pull main into develop post release v${{ steps.extract-version.outputs.release_version }}'
           pr_body: ':crown: *An automated PR*'
           pr_reviewer: 'rudderlabs/js-sdk'
 
@@ -80,7 +80,7 @@ jobs:
 
       - name: Send message to Slack channel
         id: slack
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.27.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           PROJECT_NAME: 'Gatsby Rudderstack Plugin'
