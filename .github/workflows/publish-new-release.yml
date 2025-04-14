@@ -52,49 +52,57 @@ jobs:
           npx conventional-github-releaser -p angular
           echo "DATE=$(date)" >> $GITHUB_ENV
 
-      - name: Create pull request into staging
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: 'main'
-          destination_branch: 'develop'
-          github_token: ${{ secrets.PAT }}
-          pr_title: 'chore(release): pull main into develop post release v${{ steps.extract-version.outputs.release_version }}'
-          pr_body: ':crown: *An automated PR*'
-          pr_reviewer: 'rudderlabs/js-sdk'
-
-      - name: Delete hotfix release branch
-        uses: koj-co/delete-merged-action@master
-        if: startsWith(github.event.pull_request.head.ref, 'hotfix-release/')
-        with:
-          branches: 'hotfix-release/*'
+      - name: Create pull request into develop
+        if: always()
+        continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
+        run: |
+          pr_title="chore(release): merge main into develop after release v${{ steps.extract-version.outputs.release_version }}"
+          
+          # Create PR body with proper formatting
+          cat > pr_body.md << EOF
+          :crown: **Automated Post-Release PR**
 
-      - name: Delete release branch
-        uses: koj-co/delete-merged-action@master
-        if: startsWith(github.event.pull_request.head.ref, 'release/')
-        with:
-          branches: 'release/*'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          This pull request was created automatically by the GitHub Actions workflow. It merges changes from the \`main\` branch into the \`develop\` branch after a release has been completed.
+
+          This ensures that the \`develop\` branch stays up to date with all release-related changes from the \`main\` branch.
+
+          ### Details
+          - **Release Version**: v${{ steps.extract-version.outputs.release_version }}
+
+          ---
+          Please review and merge it before closing the release ticket. :rocket:
+          EOF
+          
+          # Create the PR using GitHub CLI
+          gh pr create \
+            --base develop \
+            --head main \
+            --title "$pr_title" \
+            --body-file pr_body.md
 
       - name: Send message to Slack channel
         id: slack
-        uses: slackapi/slack-github-action@v1.27.0
+        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d  # v2.0.0
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          PROJECT_NAME: 'Gatsby Rudderstack Plugin'
+          PROJECT_NAME: 'Gatsby Plugin'
           RELEASES_URL: 'https://github.com/rudderlabs/gatsby-plugin-rudderstack/releases/'
         with:
-          channel-id: ${{ secrets.SLACK_RELEASE_CHANNEL_ID }}
+          method: 'chat.postMessage'
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          retries: rapid
+          payload-templated: true
           payload: |
             {
+              "channel": ${{ secrets.SLACK_RELEASE_CHANNEL_ID }},
+              "text": "*New Release: ${{ env.PROJECT_NAME }} - <${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SHJ20350>",
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "New release: ${{ env.PROJECT_NAME }}"
+                    "text": "New Release: ${{ env.PROJECT_NAME }}"
                   }
                 },
                 {
@@ -104,7 +112,12 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Release: <${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}"
+                    "text": "*<${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SHJ20350>"
+                  },
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                    "alt_text": "GitHub Icon"
                   }
                 }
               ]
