@@ -84,7 +84,7 @@ jobs:
 
       - name: Send message to Slack channel
         id: slack
-        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d  # v2.0.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a  # v2.1.1
         env:
           PROJECT_NAME: 'Gatsby Plugin'
           RELEASES_URL: 'https://github.com/rudderlabs/gatsby-plugin-rudderstack/releases/'
@@ -96,7 +96,7 @@ jobs:
           payload: |
             {
               "channel": ${{ secrets.SLACK_RELEASE_CHANNEL_ID }},
-              "text": "*New Release: ${{ env.PROJECT_NAME }} - <${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SHJ20350>",
+              "text": "*New Release: ${{ env.PROJECT_NAME }} - <${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SW7DM8P3>",
               "blocks": [
                 {
                   "type": "header",
@@ -112,7 +112,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*<${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SHJ20350>"
+                    "text": "*<${{env.RELEASES_URL}}${{ steps.extract-version.outputs.release_version }}|v${{ steps.extract-version.outputs.release_version }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SW7DM8P3>"
                   },
                   "accessory": {
                     "type": "image",
