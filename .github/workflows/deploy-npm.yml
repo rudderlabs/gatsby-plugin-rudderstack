@@ -65,7 +65,7 @@ jobs:
           payload: |
             {
               "channel": ${{ secrets.SLACK_RELEASE_CHANNEL_ID }},
-              "text": "*New Release: ${{ env.PROJECT_NAME }} - <${{ env.NPM_PACKAGE_URL }}|${{ env.CURRENT_VERSION_VALUE }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SHJ20350>",
+              "text": "*New Release: ${{ env.PROJECT_NAME }} - <${{ env.NPM_PACKAGE_URL }}|${{ env.CURRENT_VERSION_VALUE }}>*\n${{ env.DATE }}\nCC: <!subteam^S0555JBV36D> <!subteam^S03SW7DM8P3>",
               "blocks": [
                 {
                   "type": "header",
