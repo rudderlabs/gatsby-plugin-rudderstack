@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.5](https://github.com/rudderlabs/gatsby-plugin-rudderstack/compare/v4.0.4...v4.0.5) (2025-08-01)
+
 ### [4.0.4](https://github.com/rudderlabs/gatsby-plugin-rudderstack/compare/v4.0.3...v4.0.4) (2025-07-22)
 
 ### [4.0.3](https://github.com/rudderlabs/gatsby-plugin-rudderstack/compare/v4.0.2...v4.0.3) (2025-04-14)
