@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-rudderstack",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "Event tracking with RudderStack in your Gatsby frontend.",
   "main": "gatsby-ssr.js",
   "scripts": {
