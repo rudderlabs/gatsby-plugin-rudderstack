@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-rudderstack",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "description": "Event tracking with RudderStack in your Gatsby frontend.",
   "main": "gatsby-ssr.js",
   "scripts": {
@@ -42,32 +42,32 @@
   "homepage": "https://github.com/rudderlabs/gatsby-plugin-rudderstack#readme",
   "devDependencies": {
     "@babel/cli": "7.28.3",
-    "@babel/core": "7.28.4",
-    "@babel/eslint-parser": "7.28.4",
+    "@babel/core": "7.28.5",
+    "@babel/eslint-parser": "7.28.5",
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
-    "@babel/preset-env": "7.28.3",
-    "@babel/preset-react": "7.27.1",
-    "@commitlint/config-conventional": "19.8.1",
+    "@babel/preset-env": "7.28.5",
+    "@babel/preset-react": "7.28.5",
+    "@commitlint/config-conventional": "20.3.1",
     "@digitalroute/cz-conventional-changelog-for-jira": "8.0.1",
-    "@eslint/js": "9.35.0",
-    "@typescript-eslint/eslint-plugin": "8.43.0",
-    "@typescript-eslint/parser": "8.43.0",
+    "@eslint/js": "9.39.2",
+    "@typescript-eslint/eslint-plugin": "8.52.0",
+    "@typescript-eslint/parser": "8.52.0",
     "commitizen": "4.3.1",
-    "commitlint": "19.8.1",
+    "commitlint": "20.3.1",
     "conventional-changelog-cli": "5.0.0",
     "conventional-github-releaser": "3.1.5",
-    "eslint": "9.35.0",
+    "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-compat": "6.0.2",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-sonarjs": "3.0.5",
-    "eslint-plugin-unicorn": "61.0.2",
+    "eslint-plugin-unicorn": "62.0.0",
     "git-cz": "4.9.0",
     "husky": "9.1.7",
     "jscpd": "4.0.5",
-    "lint-staged": "16.1.6",
+    "lint-staged": "16.2.7",
     "madge": "8.0.0",
-    "prettier": "3.6.2",
+    "prettier": "3.7.4",
     "standard-version": "9.5.0"
   },
   "lint-staged": {
@@ -88,6 +88,7 @@
     "http-cache-semantics": "4.1.1",
     "semver-regex": "3.1.4",
     "trim-newlines": "3.0.1",
+    "tmp": "0.2.5",
     "conventional-github-releaser": {
       "conventional-changelog-core": "4.2.2"
     }
@@ -97,9 +98,7 @@
     "http-cache-semantics": "4.1.1",
     "semver-regex": "3.1.4",
     "trim-newlines": "3.0.1",
-    "cross-spawn": "7.0.6",
-    "nanoid": "3.3.8",
-    "@babel/runtime": "7.26.10",
+    "tmp": "0.2.5",
     "conventional-github-releaser": {
       "conventional-changelog-core": "4.2.2"
     }
