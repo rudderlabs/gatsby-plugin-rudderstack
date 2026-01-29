@@ -13,7 +13,7 @@ permissions:
 jobs:
   release:
     permissions:
-      contents: write  # for Git to git push
+      contents: read # GITHUB_TOKEN only needs read for checkout
     name: Publish new release
     runs-on: ubuntu-latest
     if: (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix-release/')) && github.event.pull_request.merged == true # only merged pull requests must trigger this job
@@ -23,10 +23,20 @@ jobs:
         with:
           egress-policy: audit
 
+      - name: Generate GitHub App Token
+        id: generate-token
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_PRIVATE_KEY }}
+          permission-contents: write # to create commits, tags, and releases
+          permission-pull-requests: write # to create and update PRs
+
       - name: Extract version from branch name (for release branches)
         id: extract-version
+        env:
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           VERSION=${BRANCH_NAME#hotfix-}
           VERSION=${VERSION#release/}
 
@@ -36,6 +46,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Setup Node
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
@@ -54,11 +65,12 @@ jobs:
         id: create_release
         env:
           HUSKY: 0
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ steps.generate-token.outputs.token }}
+          RELEASE_VERSION: ${{ steps.extract-version.outputs.release_version }}
         run: |
-          git tag -a v${{ steps.extract-version.outputs.release_version }} -m "chore: release v${{ steps.extract-version.outputs.release_version }}"
-          git push origin refs/tags/v${{ steps.extract-version.outputs.release_version }}
+          git tag -a "v${RELEASE_VERSION}" -m "chore: release v${RELEASE_VERSION}"
+          git push origin "refs/tags/v${RELEASE_VERSION}"
           npx conventional-github-releaser -p angular
           echo "DATE=$(date)" >> $GITHUB_ENV
 
@@ -66,7 +78,7 @@ jobs:
         if: always()
         continue-on-error: true
         env:
-          GH_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           pr_title="chore(release): merge main into develop after release v${{ steps.extract-version.outputs.release_version }}"
           
