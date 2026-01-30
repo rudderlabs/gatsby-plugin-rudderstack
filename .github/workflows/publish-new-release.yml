@@ -61,6 +61,16 @@ jobs:
           git config user.name "GitHub actions"
           git config user.email noreply@github.com
 
+      - name: Create verified tag
+        uses: ryancyq/github-signed-commit@e9f3b28c80da7be66d24b8f501a5abe82a6b855f
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        with:
+          branch-name: master
+          commit-message: 'chore: release v${{ steps.extract-version.outputs.release_version }}'
+          tag: 'v${{ steps.extract-version.outputs.release_version }}'
+          files: ''
+
       - name: Create GitHub Release
         id: create_release
         env:
@@ -69,8 +79,6 @@ jobs:
           CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ steps.generate-token.outputs.token }}
           RELEASE_VERSION: ${{ steps.extract-version.outputs.release_version }}
         run: |
-          git tag -a "v${RELEASE_VERSION}" -m "chore: release v${RELEASE_VERSION}"
-          git push origin "refs/tags/v${RELEASE_VERSION}"
           npx conventional-github-releaser -p angular
           echo "DATE=$(date)" >> $GITHUB_ENV
 
