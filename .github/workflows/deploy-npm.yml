@@ -55,7 +55,7 @@ jobs:
       - name: Send message to Slack channel
         id: slack
         continue-on-error: true
-        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95  # v3.0.1
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d  # v4.0.0
         env:
           PROJECT_NAME: 'Gatsby Plugin'
           NPM_PACKAGE_URL: 'https://www.npmjs.com/package/gatsby-plugin-rudderstack'
