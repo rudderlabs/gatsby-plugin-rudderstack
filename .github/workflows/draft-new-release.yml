@@ -90,7 +90,7 @@ jobs:
             -f sha="$BASE_SHA"
 
       - name: Create verified commit via API
-        uses: ryancyq/github-signed-commit@e9f3b28c80da7be66d24b8f501a5abe82a6b855f # v1.2.0
+        uses: ryancyq/github-signed-commit@cb9b21ee83578fe8e26a9eda530015aedf0c7c5b # v1.4.1
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         with:
