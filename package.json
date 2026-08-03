@@ -50,9 +50,9 @@
     "@commitlint/config-conventional": "20.3.1",
     "@digitalroute/cz-conventional-changelog-for-jira": "8.0.1",
     "@eslint/js": "9.39.2",
-    "@typescript-eslint/eslint-plugin": "8.52.0",
-    "@typescript-eslint/parser": "8.52.0",
-    "commitizen": "4.3.1",
+    "@typescript-eslint/eslint-plugin": "8.65.0",
+    "@typescript-eslint/parser": "8.65.0",
+    "commitizen": "4.3.2",
     "commitlint": "20.3.1",
     "conventional-changelog-cli": "5.0.0",
     "conventional-github-releaser": "3.1.5",
@@ -67,7 +67,7 @@
     "jscpd": "4.0.5",
     "lint-staged": "16.2.7",
     "madge": "8.0.0",
-    "prettier": "3.7.4",
+    "prettier": "3.9.6",
     "standard-version": "9.5.0"
   },
   "lint-staged": {
