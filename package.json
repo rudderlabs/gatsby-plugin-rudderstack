@@ -53,7 +53,7 @@
     "@typescript-eslint/eslint-plugin": "8.65.0",
     "@typescript-eslint/parser": "8.65.0",
     "commitizen": "4.3.2",
-    "commitlint": "20.3.1",
+    "commitlint": "21.2.2",
     "conventional-changelog-cli": "5.0.0",
     "conventional-github-releaser": "3.1.5",
     "eslint": "9.39.2",
